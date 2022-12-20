@@ -23,5 +23,8 @@
     "type-graphql": "^1.1.1",
     "typeorm": "^0.3.10",
     "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.17"
   }
 }
