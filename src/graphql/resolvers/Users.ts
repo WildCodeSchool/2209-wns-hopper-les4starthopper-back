@@ -7,7 +7,9 @@ export class UserResolver {
   ///////// QUERY FIND ALL USERS /////////////
   @Query(() => [User], { nullable: true })
   async Users(): Promise<User[]> {
-    const Users = await dataSource.getRepository(User).find({});
+    const Users = await dataSource
+      .getRepository(User)
+      .find({ relations: ["comments"] });
     return Users;
   }
 }
