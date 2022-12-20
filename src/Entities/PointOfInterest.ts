@@ -18,85 +18,89 @@ import { Category } from "./Category";
 @ObjectType()
 export class PointOfInterest {
   @PrimaryGeneratedColumn()
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   id: number;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   name: string;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   description: string;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   latitude: number;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   longitude: number;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   created_at: Date;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
   updated_at: Date;
 
-  @Column()
-  @Field()
-  created_by: User;
+  // @Column()
+  // @Field()
+  // created_by: User;
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  updated_by: User;
+  // @Column({ nullable: true })
+  // @Field({ nullable: true })
+  // updated_by: User;
 
-  @ManyToOne(() => User, (user) => user.pointOfInterests)
-  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.pointOfInterests, { nullable: true })
+  @Field(() => User, { nullable: true })
   user: User;
 
-  @OneToMany(() => Comment, (comment) => comment.pointOfInterest)
-  @Field(() => [Comment])
+  @OneToMany(() => Comment, (comment) => comment.pointOfInterest, {
+    nullable: true,
+  })
+  @Field(() => [Comment], { nullable: true })
   comments: Comment[];
 
-  @OneToMany(() => Picture, (picture) => picture.pointOfInterest)
-  @Field(() => [Picture])
+  @OneToMany(() => Picture, (picture) => picture.pointOfInterest, {
+    nullable: true,
+  })
+  @Field(() => [Picture], { nullable: true })
   pictures: Picture[];
 
-  @ManyToOne(() => City, (city) => city.pointOfInterests)
-  @Field(() => [City])
+  @ManyToOne(() => City, (city) => city.pointOfInterests, { nullable: true })
+  @Field(() => [City], { nullable: true })
   city: City;
 
-  @ManyToMany(() => Category)
+  @ManyToMany(() => Category, { nullable: true })
   @JoinTable()
   categories: Category[];
 }
 
 @InputType()
 export class CommentInput {
-  @Field()
+  @Field({ nullable: true })
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   description: string;
 
-  @Field()
+  @Field({ nullable: true })
   latitude: number;
 
-  @Field()
+  @Field({ nullable: true })
   longitude: number;
 
-  @Field()
+  @Field({ nullable: true })
   created_at: Date;
 
   @Field({ nullable: true })
   updated_at: Date;
 
-  @Field()
-  created_by: Date;
+  // @Field()
+  // created_by: Date;
 
-  @Field({ nullable: true })
-  updated_by: Date;
+  // @Field({ nullable: true })
+  // updated_by: Date;
 }

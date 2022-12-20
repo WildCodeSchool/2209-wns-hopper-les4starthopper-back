@@ -7,54 +7,55 @@ import { PointOfInterest } from "./PointOfInterest";
 @ObjectType()
 export class Picture {
   @PrimaryGeneratedColumn()
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   id: number;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   name: string;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   created_at: Date;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
   updated_at: Date;
 
-  @Column()
-  @Field()
-  created_by: User;
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  updated_by: User;
+  // @Column()
+  // @Field()
+  // created_by: User;
+  // @Column({ nullable: true })
+  // @Field({ nullable: true })
+  // updated_by: User;
 
-  @ManyToOne(() => User, (user) => user.pictures)
+  @ManyToOne(() => User, (user) => user.pictures, { nullable: true })
   @Field(() => User)
   user: User;
 
   @ManyToOne(
     () => PointOfInterest,
-    (pointOfInterest) => pointOfInterest.pictures
+    (pointOfInterest) => pointOfInterest.pictures,
+    { nullable: true }
   )
-  @Field(() => [PointOfInterest])
+  @Field(() => [PointOfInterest], { nullable: true })
   pointOfInterest: PointOfInterest;
 }
 
 @InputType()
 export class CommentInput {
-  @Field()
+  @Field({ nullable: true })
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   created_at: Date;
 
   @Field({ nullable: true })
   updated_at: Date;
 
-  @Field()
-  created_by: Date;
+  // @Field()
+  // created_by: Date;
 
-  @Field({ nullable: true })
-  updated_by: Date;
+  // @Field({ nullable: true })
+  // updated_by: Date;
 }

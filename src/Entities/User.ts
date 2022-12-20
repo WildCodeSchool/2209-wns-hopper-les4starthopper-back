@@ -10,76 +10,78 @@ import { City } from "./City";
 @ObjectType()
 export class User {
   @PrimaryGeneratedColumn()
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   id: number;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   email: string;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   password: string;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   role: number;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   created_at: Date;
 
-  @Column()
-  @Field()
-  created_by: User;
+  // @Column({ nullable: true })
+  // @Field({ nullable: true })
+  // created_by: User;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
   updated_at: Date;
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  updated_by: User;
+  // @Column({ nullable: true })
+  // @Field({ nullable: true })
+  // updated_by: User;
 
-  @OneToMany(() => Comment, (comment) => comment.user)
-  @Field(() => [Comment])
+  @OneToMany(() => Comment, "user", { nullable: true })
+  @Field(() => [Comment], { nullable: true })
   comments: Comment[];
 
-  @OneToMany(() => Picture, (picture) => picture.user)
-  @Field(() => [Picture])
+  @OneToMany(() => Picture, (picture) => picture.user, { nullable: true })
+  @Field(() => [Picture], { nullable: true })
   pictures: Picture[];
 
-  @OneToMany(() => Category, (category) => category.user)
-  @Field(() => [Category])
+  @OneToMany(() => Category, (category) => category.user, { nullable: true })
+  @Field(() => [Category], { nullable: true })
   categories: Category[];
 
-  @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.user)
-  @Field(() => [PointOfInterest])
+  @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.user, {
+    nullable: true,
+  })
+  @Field(() => [PointOfInterest], { nullable: true })
   pointOfInterests: PointOfInterest[];
 
-  @OneToMany(() => City, (city) => city.user)
-  @Field(() => [City])
+  @OneToMany(() => City, (city) => city.user, { nullable: true })
+  @Field(() => [City], { nullable: true })
   cities: City[];
 }
 
 @InputType()
 export class CommentInput {
-  @Field()
+  @Field({ nullable: true })
   email: string;
 
-  @Field()
+  @Field({ nullable: true })
   password: string;
 
-  @Field()
+  @Field({ nullable: true })
   role: number;
 
-  @Field()
+  @Field({ nullable: true })
   created_at: Date;
 
   @Field({ nullable: true })
   updated_at: Date;
 
-  @Field()
+  @Field({ nullable: true })
   created_by: Date;
 
   @Field({ nullable: true })

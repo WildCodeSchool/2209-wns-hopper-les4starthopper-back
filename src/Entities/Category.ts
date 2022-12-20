@@ -14,59 +14,59 @@ import { PointOfInterest } from "./PointOfInterest";
 @ObjectType()
 export class Category {
   @PrimaryGeneratedColumn()
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   id: number;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   name: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
   icon: string;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   created_at: Date;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
   updated_at: Date;
 
-  @Column()
-  @Field()
-  created_by: User;
+  // @Column()
+  // @Field()
+  // created_by: User;
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  updated_by: User;
+  // @Column({ nullable: true })
+  // @Field({ nullable: true })
+  // updated_by: User;
 
-  @ManyToOne(() => User, (user) => user.categories)
-  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.categories, { nullable: true })
+  @Field(() => User, { nullable: true })
   user: User;
 
-  @ManyToMany(() => PointOfInterest)
+  @ManyToMany(() => PointOfInterest, { nullable: true })
   @JoinTable()
   pointofInterests: PointOfInterest[];
 }
 
 @InputType()
 export class CommentInput {
-  @Field()
+  @Field({ nullable: true })
   name: string;
 
   @Field({ nullable: true })
   icon: string;
 
-  @Field()
+  @Field({ nullable: true })
   created_at: Date;
 
   @Field({ nullable: true })
   updated_at: Date;
 
-  @Field()
-  created_by: User;
+  // @Field()
+  // created_by: User;
 
-  @Field({ nullable: true })
-  updated_by: User;
+  // @Field({ nullable: true })
+  // updated_by: User;
 }

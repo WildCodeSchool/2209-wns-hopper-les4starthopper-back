@@ -13,66 +13,68 @@ import { PointOfInterest } from "./PointOfInterest";
 @ObjectType()
 export class City {
   @PrimaryGeneratedColumn()
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   id: number;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   name: string;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   latitude: number;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   longitude: number;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   created_at: Date;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
   updated_at: Date;
 
-  @Column()
-  @Field()
-  created_by: User;
+  // @Column()
+  // @Field()
+  // created_by: User;
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  updated_by: User;
+  // @Column({ nullable: true })
+  // @Field({ nullable: true })
+  // updated_by: User;
 
-  @ManyToOne(() => User, (user) => user.cities)
-  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.cities, { nullable: true })
+  @Field(() => User, { nullable: true })
   user: User;
 
-  @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.city)
-  @Field(() => [PointOfInterest])
+  @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.city, {
+    nullable: true,
+  })
+  @Field(() => [PointOfInterest], { nullable: true })
   pointOfInterests: PointOfInterest[];
 }
 
 @InputType()
 export class CommentInput {
-  @Field()
+  @Field({ nullable: true })
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   latitude: number;
 
-  @Field()
+  @Field({ nullable: true })
   longitude: number;
 
-  @Field()
+  @Field({ nullable: true })
   created_at: Date;
 
   @Field({ nullable: true })
   updated_at: Date;
 
-  @Field()
-  created_by: Date;
+  // @Field()
+  // created_by: Date;
 
-  @Field({ nullable: true })
-  updated_by: Date;
+  // @Field({ nullable: true })
+  // updated_by: Date;
 }
