@@ -1,4 +1,4 @@
-import { User } from "./models/User";
+import { User } from "./Entities/User";
 import { DataSource } from "typeorm";
 import { Comment } from "./Entities/Comment";
 import { PointOfInterest } from "./Entities/PointOfInterest";
