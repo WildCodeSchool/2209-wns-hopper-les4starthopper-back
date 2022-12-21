@@ -1,4 +1,5 @@
 import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
+import { DeleteResult } from "typeorm";
 import { User, UserInput } from "../../Entities/User";
 import dataSource from "../../utils";
 
@@ -27,22 +28,25 @@ export class UserResolver {
   }
   ///////// MUTATION DELETE USER /////////////
   @Mutation(() => User, { nullable: true })
-  async deleteUser(@Arg("id", () => ID) id: number): Promise<User | null> {
-    const deleteUser = await dataSource
+  async deleteUser(
+    @Arg("id", () => ID) id: number
+  ): Promise<DeleteResult | null> {
+    return await dataSource
       .getRepository(User)
-      .findOne({ where: { id } });
-    if (!deleteUser) {
-      return null;
-    }
-    return await dataSource.getRepository(User).remove(deleteUser);
+      .createQueryBuilder("users")
+      .delete()
+      .from(User)
+      .where("id = :id", { id })
+      .execute();
   }
   ///////// MUTATION DELETE USERS/////////////
-  @Mutation(() => [User], { nullable: true })
-  async deleteUsers(): Promise<User[] | null> {
-    const deleteUsers = await dataSource.getRepository(User).find({});
-    if (!deleteUsers) {
-      return null;
-    }
-    return await dataSource.getRepository(User).remove(deleteUsers);
+  @Mutation(() => User, { nullable: true })
+  async deleteUsers(): Promise<DeleteResult | null> {
+    return await dataSource
+      .getRepository(User)
+      .createQueryBuilder("users")
+      .delete()
+      .from(User)
+      .execute();
   }
 }
