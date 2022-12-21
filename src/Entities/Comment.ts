@@ -34,7 +34,7 @@ export class Comment {
   // @Field({ nullable: true })
   // updated_by: User;
 
-  @ManyToOne(() => User, "comments", { nullable: true })
+  @ManyToOne(() => User, (user) => user.comments, { nullable: true })
   @Field(() => User, { nullable: true })
   user: User;
 
