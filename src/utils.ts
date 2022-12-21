@@ -1,5 +1,10 @@
-import { User } from "./models/User";
+import { User } from "./Entities/User";
 import { DataSource } from "typeorm";
+import { Comment } from "./Entities/Comment";
+import { PointOfInterest } from "./Entities/PointOfInterest";
+import { Picture } from "./Entities/Picture";
+import { City } from "./Entities/City";
+import { Category } from "./Entities/Category";
 
 const datasource = new DataSource({
   type: "postgres",
@@ -8,7 +13,7 @@ const datasource = new DataSource({
   password: "supersecret",
   database: "postgres",
   synchronize: true,
-  entities: [User],
+  entities: [User, Comment, PointOfInterest, Picture, City, Category],
   logging: ["query", "error"],
 });
 export default datasource;
