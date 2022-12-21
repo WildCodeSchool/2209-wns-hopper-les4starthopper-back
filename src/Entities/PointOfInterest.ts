@@ -79,7 +79,7 @@ export class PointOfInterest {
 }
 
 @InputType()
-export class CommentInput {
+export class PointOfInterestInput {
   @Field({ nullable: true })
   name: string;
 

@@ -43,7 +43,7 @@ export class Picture {
 }
 
 @InputType()
-export class CommentInput {
+export class PictureInput {
   @Field({ nullable: true })
   name: string;
 

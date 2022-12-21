@@ -51,7 +51,7 @@ export class Category {
 }
 
 @InputType()
-export class CommentInput {
+export class CategoryInput {
   @Field({ nullable: true })
   name: string;
 

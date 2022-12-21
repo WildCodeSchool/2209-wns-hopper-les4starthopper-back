@@ -65,7 +65,7 @@ export class User {
 }
 
 @InputType()
-export class CommentInput {
+export class UserInput {
   @Field({ nullable: true })
   email: string;
 

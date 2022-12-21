@@ -56,7 +56,7 @@ export class City {
 }
 
 @InputType()
-export class CommentInput {
+export class CityInput {
   @Field({ nullable: true })
   name: string;
 
