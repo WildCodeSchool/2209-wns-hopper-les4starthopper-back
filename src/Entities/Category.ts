@@ -47,7 +47,7 @@ export class Category {
 
   @ManyToMany(() => PointOfInterest, { nullable: true })
   @JoinTable()
-  pointofInterests: PointOfInterest[];
+  pointOfInterests: PointOfInterest[];
 }
 
 @InputType()
