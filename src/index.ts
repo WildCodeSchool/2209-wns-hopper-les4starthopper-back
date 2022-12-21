@@ -4,12 +4,13 @@ import { UserResolver } from "./graphql/resolvers/Users";
 import { CityResolver } from "./graphql/resolvers/Cities";
 import { buildSchema } from "type-graphql";
 import datasource from "./utils";
+import { CommentResolver } from "./graphql/resolvers/Comments";
 
 const PORT = process.env.PORT || 4000;
 
 async function bootstrap() {
   const schema = await buildSchema({
-    resolvers: [CityResolver, UserResolver],
+    resolvers: [CityResolver, UserResolver, CommentResolver],
   });
   const server = new ApolloServer({
     schema,

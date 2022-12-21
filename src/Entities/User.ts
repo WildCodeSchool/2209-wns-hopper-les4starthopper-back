@@ -41,7 +41,7 @@ export class User {
   // @Field({ nullable: true })
   // updated_by: User;
 
-  @OneToMany(() => Comment, "user", { nullable: true })
+  @OneToMany(() => Comment, (comment) => comment.user, { nullable: true })
   @Field(() => [Comment], { nullable: true })
   comments: Comment[];
 
