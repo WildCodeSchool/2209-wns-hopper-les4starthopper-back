@@ -43,7 +43,7 @@ export class UserResolver {
   @Mutation(() => User, { nullable: true })
   async updateUser(
     @Arg("id", () => ID) id: number,
-    @Arg("role", { nullable: true }) role: number
+    @Arg("role") role: number
   ): Promise<User | null> {
     const updateUser = await dataSource
       .getRepository(User)
@@ -57,7 +57,7 @@ export class UserResolver {
     return await dataSource.getRepository(User).save(updateUser);
   }
   ///////// MUTATION DELETE USERS/////////////
-  @Mutation(() => User, { nullable: true })
+  @Mutation(() => User)
   async deleteUsers(): Promise<DeleteResult | null> {
     return await dataSource
       .getRepository(User)

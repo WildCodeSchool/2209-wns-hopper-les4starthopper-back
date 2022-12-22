@@ -9,7 +9,6 @@ export const cleanDb = async () => {
       .map((entity) => `"${entity.tableName}"`)
       .join(", ");
     await datasource.query(`TRUNCATE ${tableNames} CASCADE;`);
-    console.log("[TEST DATABASE]: Clean");
   } catch (error) {
     throw new Error(`ERROR: Cleaning test database: ${JSON.stringify(error)}`);
   }
