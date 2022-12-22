@@ -26,6 +26,10 @@ export class Comment {
   @Field({ nullable: true })
   updated_at: Date;
 
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  userId: number;
+
   // @Column()
   // @Field()
   // created_by: User;
@@ -49,6 +53,9 @@ export class Comment {
 
 @InputType()
 export class CommentInput {
+  @Field({ nullable: true })
+  userId: number;
+
   @Field({ nullable: true })
   comment: string;
 
