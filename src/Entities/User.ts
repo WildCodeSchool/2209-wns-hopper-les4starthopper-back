@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { ObjectType, Field, ID, InputType } from "type-graphql";
+import { TypeormLoader } from "type-graphql-dataloader";
 import { Comment } from "./Comment";
 import { Picture } from "./Picture";
 import { Category } from "./Category";
@@ -44,6 +45,8 @@ export class User {
   @OneToMany(() => Comment, (comment) => comment.user, { nullable: true })
   @Field(() => [Comment], { nullable: true })
   comments: Comment[];
+  @TypeormLoader((comments: Comment) => comments.userId, { selfKey: true })
+  userComments: Comment[];
 
   @OneToMany(() => Picture, (picture) => picture.user, { nullable: true })
   @Field(() => [Picture], { nullable: true })
