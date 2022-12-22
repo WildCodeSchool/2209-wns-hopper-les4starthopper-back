@@ -45,7 +45,7 @@ export class UserResolver {
   @Mutation(() => User, { nullable: true })
   async updateUser(
     @Arg("id", () => ID) id: number,
-    @Arg("role", { nullable: true }) role: number
+    @Arg("role") role: number
   ): Promise<User | null> {
     const updateUser = await dataSource
       .getRepository(User)
