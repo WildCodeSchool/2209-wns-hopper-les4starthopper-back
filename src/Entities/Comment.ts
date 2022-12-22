@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  RelationId,
-} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { ObjectType, Field, ID, InputType } from "type-graphql";
 import { User } from "./User";
 import { PointOfInterest } from "./PointOfInterest";
@@ -32,9 +26,9 @@ export class Comment {
   @Field({ nullable: true })
   updated_at: Date;
 
-  // @Column({ nullable: true })
-  // @Field({ nullable: true })
-  // userId: number;
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  userId: number;
 
   // @Column()
   // @Field()
@@ -44,11 +38,9 @@ export class Comment {
   // @Field({ nullable: true })
   // updated_by: User;
 
-  @ManyToOne(() => User, (user) => user.comments)
+  @ManyToOne(() => User, (user) => user.comments, { nullable: true })
   @Field(() => User, { nullable: true })
   user: User;
-  @RelationId((comment: Comment) => comment.user)
-  userId: string;
 
   @ManyToOne(
     () => PointOfInterest,
