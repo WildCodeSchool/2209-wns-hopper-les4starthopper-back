@@ -2,12 +2,13 @@ import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
 import { DeleteResult } from "typeorm";
 import { User, UserInput } from "../../Entities/User";
 import dataSource from "../../utils";
+import { hash } from "argon2";
 
 @Resolver()
 export class UserResolver {
   ///////// QUERY FIND ALL USERS /////////////
   @Query(() => [User], { nullable: true })
-  async Users(): Promise<User[]> {
+  async FindAllUsers(): Promise<User[]> {
     const Users = await dataSource.getRepository(User).find({
       relations: { comments: true },
     });
@@ -15,7 +16,7 @@ export class UserResolver {
   }
   ///////// QUERY FIND ONE USER /////////////
   @Query(() => User, { nullable: true })
-  async user(@Arg("id", () => ID) id: number): Promise<User | null> {
+  async FindUser(@Arg("id", () => ID) id: number): Promise<User | null> {
     const user = await dataSource
       .getRepository(User)
       .findOne({ where: { id } });
@@ -24,6 +25,7 @@ export class UserResolver {
   ///////// MUTATION CREATE USER /////////////
   @Mutation(() => User)
   async createUser(@Arg("data") data: UserInput): Promise<User> {
+    data.password = await hash(data.password);
     return await dataSource.getRepository(User).save(data);
   }
   ///////// MUTATION DELETE USER /////////////
