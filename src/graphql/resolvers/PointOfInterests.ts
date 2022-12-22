@@ -28,14 +28,14 @@ export class PointOfInterestResolver {
       .findOne({ where: { id } });
     return pointOfInterest;
   }
-  ///////// MUTATION CREATE CATEGORY /////////////
+  ///////// MUTATION CREATE POINT IF INTEREST /////////////
   @Mutation(() => PointOfInterest)
   async createPointOfInterest(
     @Arg("data") data: PointOfInterestInput
   ): Promise<PointOfInterest> {
     return await dataSource.getRepository(PointOfInterest).save(data);
   }
-  ///////// MUTATION DELETE CATEGORY /////////////
+  ///////// MUTATION DELETE POINT IF INTEREST /////////////
   @Mutation(() => PointOfInterest, { nullable: true })
   async deletePointOfInterest(
     @Arg("id", () => ID) id: number
@@ -48,6 +48,27 @@ export class PointOfInterestResolver {
       .where("id = :id", { id })
       .execute();
   }
+
+  ///////// MUTATION UPDATE POINT OF INTEREST/////////////
+  @Mutation(() => PointOfInterest, { nullable: true })
+  async updatePointOfInterest(
+    @Arg("id", () => ID) id: number,
+    @Arg("description") description: string
+  ): Promise<PointOfInterest | null> {
+    const updatePointOfInterest = await dataSource
+      .getRepository(PointOfInterest)
+      .findOne({ where: { id } });
+    if (updatePointOfInterest === null) {
+      return null;
+    }
+    if (description != null) {
+      updatePointOfInterest.description = description;
+    }
+    return await dataSource
+      .getRepository(PointOfInterest)
+      .save(updatePointOfInterest);
+  }
+
   ///////// MUTATION DELETE POINT OF INTEREST/////////////
   @Mutation(() => PointOfInterest, { nullable: true })
   async deletePointOfinterests(): Promise<DeleteResult | null> {

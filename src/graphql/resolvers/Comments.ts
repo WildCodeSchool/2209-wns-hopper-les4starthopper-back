@@ -26,6 +26,25 @@ export class CommentResolver {
   async createComment(@Arg("data") data: CommentInput): Promise<Comment> {
     return await dataSource.getRepository(Comment).save(data);
   }
+
+  ///////// MUTATION UPDATE COMMENT /////////////
+  @Mutation(() => Comment, { nullable: true })
+  async updateComment(
+    @Arg("id", () => ID) id: number,
+    @Arg("note") note: number
+  ): Promise<Comment | null> {
+    const updateComment = await dataSource
+      .getRepository(Comment)
+      .findOne({ where: { id } });
+    if (updateComment === null) {
+      return null;
+    }
+    if (note != null) {
+      updateComment.note = note;
+    }
+    return await dataSource.getRepository(Comment).save(updateComment);
+  }
+
   ///////// MUTATION DELETE COMMENT /////////////
   @Mutation(() => Comment, { nullable: true })
   async deleteComment(
