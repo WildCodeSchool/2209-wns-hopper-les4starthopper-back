@@ -13,7 +13,7 @@ export class User {
   @Field(() => ID, { nullable: true })
   id: number;
 
-  @Column({ nullable: true })
+  @Column({ unique: true })
   @Field({ nullable: true })
   email: string;
 

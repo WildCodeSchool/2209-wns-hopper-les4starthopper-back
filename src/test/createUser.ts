@@ -5,3 +5,11 @@ export const createUser = `
     }
   }
 `;
+
+export const getUsers = `
+  query Users {
+    Users{
+      id
+    }
+  }
+`;
