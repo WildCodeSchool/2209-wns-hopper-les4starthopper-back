@@ -73,7 +73,10 @@ export class PointOfInterest {
   @Field(() => [Picture], { nullable: true })
   pictures: Picture[];
 
-  @ManyToOne(() => City, (city) => city.pointOfInterests, { nullable: true })
+  @ManyToOne(() => City, (city) => city.pointOfInterests, {
+    onDelete: "CASCADE",
+    nullable: true,
+  })
   @Field(() => City, { nullable: true })
   city: City;
 

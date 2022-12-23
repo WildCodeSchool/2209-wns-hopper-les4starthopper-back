@@ -117,7 +117,6 @@ describe("users", () => {
         schema,
         source: deleteUsers,
       });
-      console.log("🚀 ~ file: users.test.ts:120 ~ it ~ result", result);
       expect(result.data?.deleteUsers.id).toBeNull();
     });
   });
