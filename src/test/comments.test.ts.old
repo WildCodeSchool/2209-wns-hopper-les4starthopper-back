@@ -43,14 +43,15 @@ beforeAll(async () => {
 
 describe("comments", () => {
   describe("check comments creation", () => {
-    it.skip("creates a new comment", async () => {
+    it("creates a new comment", async () => {
       const result = await graphql({
         schema,
         source: createComment,
         variableValues: {
           data: {
             comment: "test comment",
-            userId: 324,
+            //userId: 324,
+            note: 1,
           },
         },
       });
@@ -59,29 +60,30 @@ describe("comments", () => {
       expect(result?.data?.createComment).toBeTruthy();
     });
 
-    it.skip("find all comments in db", async () => {
+    it("find all comments in db", async () => {
       const comments = await datasource.getRepository(Comment).find({});
       expect(Array.isArray(comments)).toBeTruthy();
     });
 
-    it.skip("check if the comment is correctly updated", async () => {
+    it("check if the comment is correctly updated", async () => {
       const result = await graphql({
         schema,
         source: updateComment,
         variableValues: {
           commentId: commentId,
           comment: "test UPDATE comment",
+          note: 5,
         },
       });
       expect(result.data?.updateComment?.comment !== comment);
     });
 
-    it.skip("check if the selected comment is correctly deleted from DB", async () => {
+    it("check if the selected comment is correctly deleted from DB", async () => {
       const result = await graphql({
         schema,
         source: deleteComment,
         variableValues: {
-          commentId: 61,
+          commentId: 69,
         },
       });
       expect(result.data?.deleteComment?.id).toBeNull();

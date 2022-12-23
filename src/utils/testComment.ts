@@ -24,10 +24,11 @@ export const deleteComment = `
 `;
 
 export const updateComment = `
-  mutation updateComment ($commentId: ID!, $comment: String!) {
-    updateComment (id: $commentId, comment: $comment) {
+  mutation updateComment ($commentId: ID!, $comment: String!, $note: Float!) {
+    updateComment (id: $commentId, comment: $comment, note: $note) {
       id
       comment
+      note
     }
   }
 `;

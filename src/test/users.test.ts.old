@@ -18,9 +18,8 @@ let userId: number;
 let role: number;
 
 beforeAll(async () => {
-  // connect to DB
   await datasource.initialize();
-  // compute GraphQL schema
+  // await cleanDb(); <=================== rollback to use this script if necessary TODO maybe a dev DB ?
   schema = await buildSchema({
     resolvers: [UserResolver],
   });
@@ -51,7 +50,7 @@ describe("users", () => {
         variableValues: {
           data: {
             email: "testuser1@testuser1.com",
-            password: "supersecret",
+            password: "Supers3cret",
             role: 1,
           },
         },
