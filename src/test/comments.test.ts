@@ -10,8 +10,6 @@ import {
   getComments,
   updateComment,
 } from "../utils/testComment";
-import { User } from "../Entities/User";
-import { cleanDb } from "./cleanDb";
 import { Comment } from "../Entities/Comment";
 
 let schema: GraphQLSchema;

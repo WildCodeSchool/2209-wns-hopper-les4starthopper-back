@@ -31,11 +31,11 @@ export class PointOfInterest {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  latitude: number;
+  latitude: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  longitude: number;
+  longitude: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
@@ -44,6 +44,10 @@ export class PointOfInterest {
   @Column({ nullable: true })
   @Field({ nullable: true })
   updated_at: Date;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  cityId: number;
 
   // @Column()
   // @Field()
@@ -70,7 +74,7 @@ export class PointOfInterest {
   pictures: Picture[];
 
   @ManyToOne(() => City, (city) => city.pointOfInterests, { nullable: true })
-  @Field(() => [City], { nullable: true })
+  @Field(() => City, { nullable: true })
   city: City;
 
   @ManyToMany(() => Category, { nullable: true })
@@ -84,13 +88,16 @@ export class PointOfInterestInput {
   name: string;
 
   @Field({ nullable: true })
+  cityId: number;
+
+  @Field({ nullable: true })
   description: string;
 
   @Field({ nullable: true })
-  latitude: number;
+  latitude: string;
 
   @Field({ nullable: true })
-  longitude: number;
+  longitude: string;
 
   @Field({ nullable: true })
   created_at: Date;

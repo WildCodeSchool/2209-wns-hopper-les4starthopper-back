@@ -22,11 +22,11 @@ export class City {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  latitude: number;
+  latitude: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  longitude: number;
+  longitude: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
@@ -61,10 +61,10 @@ export class CityInput {
   name: string;
 
   @Field({ nullable: true })
-  latitude: number;
+  latitude: string;
 
   @Field({ nullable: true })
-  longitude: number;
+  longitude: string;
 
   @Field({ nullable: true })
   created_at: Date;
