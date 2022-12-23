@@ -11,7 +11,7 @@ import {
   updateUser,
 } from "../utils/testsUser";
 import { User } from "../Entities/User";
-import { cleanDb } from "./cleanDb";
+import { cleanDb } from "../script/cleanDb";
 
 let schema: GraphQLSchema;
 let userId: number;
@@ -37,7 +37,7 @@ beforeAll(async () => {
 //       schema,
 //       source: getUsers,
 //     });
-//     expect(result?.data?.Users.length).toEqual(0);
+//     expect(result?.data?.FindAllUsers.length).toEqual(0);
 //   });
 // });
 

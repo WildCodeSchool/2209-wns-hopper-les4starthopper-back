@@ -8,8 +8,8 @@ export const createUser = `
 `;
 
 export const getUsers = `
-  query Users {
-    Users{
+  query FindAllUsers {
+    FindAllUsers{
       id
     }
   }

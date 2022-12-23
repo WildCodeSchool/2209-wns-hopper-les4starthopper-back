@@ -31,6 +31,7 @@ export class CategoryResolver {
   @Mutation(() => Category, { nullable: true })
   async updateCategory(
     @Arg("id", () => ID) id: number,
+    @Arg("name") name: string,
     @Arg("icon") icon: string
   ): Promise<Category | null> {
     const updateCategory = await dataSource
@@ -39,8 +40,9 @@ export class CategoryResolver {
     if (updateCategory === null) {
       return null;
     }
-    if (icon != null) {
+    if (icon != null && name != null) {
       updateCategory.icon = icon;
+      updateCategory.name = name;
     }
     return await dataSource.getRepository(Category).save(updateCategory);
   }
