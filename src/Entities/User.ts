@@ -6,6 +6,7 @@ import { Picture } from "./Picture";
 import { Category } from "./Category";
 import { PointOfInterest } from "./PointOfInterest";
 import { City } from "./City";
+import { IsEmail, Matches } from "class-validator";
 
 @Entity()
 @ObjectType()
@@ -14,7 +15,11 @@ export class User {
   @Field(() => ID, { nullable: true })
   id: number;
 
+<<<<<<< HEAD
   @Column({ unique: true })
+=======
+  @Column({ nullable: true, unique: true })
+>>>>>>> 59869cb273dae8f838a3b789ae3afa352dfe5e8b
   @Field({ nullable: true })
   email: string;
 
@@ -68,9 +73,11 @@ export class User {
 @InputType()
 export class UserInput {
   @Field({ nullable: true })
+  @IsEmail()
   email: string;
 
   @Field({ nullable: true })
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,64}$/)
   password: string;
 
   @Field({ nullable: true })

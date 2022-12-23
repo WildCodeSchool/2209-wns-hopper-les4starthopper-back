@@ -26,6 +26,25 @@ export class CategoryResolver {
   async createCategory(@Arg("data") data: CategoryInput): Promise<Category> {
     return await dataSource.getRepository(Category).save(data);
   }
+
+  ///////// MUTATION UPDATE USERS/////////////
+  @Mutation(() => Category, { nullable: true })
+  async updateCategory(
+    @Arg("id", () => ID) id: number,
+    @Arg("icon") icon: string
+  ): Promise<Category | null> {
+    const updateCategory = await dataSource
+      .getRepository(Category)
+      .findOne({ where: { id } });
+    if (updateCategory === null) {
+      return null;
+    }
+    if (icon != null) {
+      updateCategory.icon = icon;
+    }
+    return await dataSource.getRepository(Category).save(updateCategory);
+  }
+
   ///////// MUTATION DELETE CATEGORY /////////////
   @Mutation(() => Category, { nullable: true })
   async deleteCategory(
