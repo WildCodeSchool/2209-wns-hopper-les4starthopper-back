@@ -9,7 +9,7 @@ import {
   deleteUsers,
   getUsers,
   updateUser,
-} from "./testsUser";
+} from "../utils/testsUser";
 import { User } from "../Entities/User";
 import { cleanDb } from "./cleanDb";
 
@@ -117,6 +117,7 @@ describe("users", () => {
         schema,
         source: deleteUsers,
       });
+      console.log("🚀 ~ file: users.test.ts:120 ~ it ~ result", result);
       expect(result.data?.deleteUsers.id).toBeNull();
     });
   });
