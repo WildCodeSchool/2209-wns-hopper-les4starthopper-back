@@ -21,6 +21,14 @@ export class CityResolver {
       .findOne({ where: { id } });
     return city;
   }
+  //////////  QUERY CITY BY NAME //////////
+  @Query(() => City, { nullable: true })
+  async cityByName(@Arg("name") name: string): Promise<City | null> {
+    const city = await dataSource
+      .getRepository(City)
+      .findOne({ where: { name }, relations: ["pointOfInterests"] });
+    return city;
+  }
   ///////// MUTATION CREATE CITY /////////////
   @Mutation(() => City)
   async createCity(@Arg("data") data: CityInput): Promise<City> {

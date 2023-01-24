@@ -73,6 +73,7 @@ export class UserInput {
   email: string;
 
   @Field({ nullable: true })
+  // 1 maj ... 8 caractères minimum
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,64}$/)
   password: string;
 
