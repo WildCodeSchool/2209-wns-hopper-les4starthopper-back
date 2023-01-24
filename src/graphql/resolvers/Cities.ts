@@ -24,15 +24,21 @@ export class CityResolver {
   //////////  QUERY CITY BY NAME //////////
   @Query(() => City, { nullable: true })
   async cityByName(@Arg("name") name: string): Promise<City | null> {
-    const city = await dataSource
-      .getRepository(City)
-      .findOne({ where: { name }, relations: ["pointOfInterests"] });
+    const lowerCaseName = name.toLowerCase();
+    const city = await dataSource.getRepository(City).findOne({
+      where: { name: lowerCaseName },
+      relations: ["pointOfInterests"],
+    });
     return city;
   }
   ///////// MUTATION CREATE CITY /////////////
   @Mutation(() => City)
   async createCity(@Arg("data") data: CityInput): Promise<City> {
-    return await dataSource.getRepository(City).save(data);
+    let datas: CityInput = {
+      ...data,
+      name: data.name.toLowerCase(),
+    };
+    return await dataSource.getRepository(City).save(datas);
   }
   ///////// MUTATION DELETE CITY /////////////
   @Mutation(() => City, { nullable: true })
