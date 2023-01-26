@@ -2,6 +2,7 @@ import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
 import { DeleteResult } from "typeorm";
 import { Category, CategoryInput } from "../../Entities/Category";
 import dataSource from "../../utils";
+import { categoriesRelations } from "../../utils/relations";
 
 @Resolver()
 export class CategoryResolver {
@@ -9,7 +10,7 @@ export class CategoryResolver {
   @Query(() => [Category], { nullable: true })
   async Categories(): Promise<Category[]> {
     const Categories = await dataSource.getRepository(Category).find({
-      relations: ["user", "pointOfInterests"],
+      relations: categoriesRelations,
     });
     return Categories;
   }
@@ -18,7 +19,7 @@ export class CategoryResolver {
   async category(@Arg("id", () => ID) id: number): Promise<Category | null> {
     const category = await dataSource
       .getRepository(Category)
-      .findOne({ where: { id } });
+      .findOne({ where: { id }, relations: categoriesRelations });
     return category;
   }
   ///////// MUTATION CREATE CATEGORY /////////////

@@ -30,6 +30,10 @@ export class Comment {
   @Field({ nullable: true })
   userId: number;
 
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  pointOfInterestId: number;
+
   // @Column()
   // @Field()
   // created_by: User;
@@ -50,7 +54,7 @@ export class Comment {
     (pointOfInterest) => pointOfInterest.comments,
     { nullable: true }
   )
-  @Field(() => [PointOfInterest], { nullable: true })
+  @Field(() => PointOfInterest, { nullable: true })
   pointOfInterest: PointOfInterest;
 }
 
@@ -58,6 +62,9 @@ export class Comment {
 export class CommentInput {
   @Field({ nullable: true })
   userId: number;
+
+  @Field({ nullable: true })
+  pointOfInterestId: number;
 
   @Field({ nullable: true })
   comment: string;

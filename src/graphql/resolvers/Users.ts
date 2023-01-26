@@ -3,6 +3,7 @@ import { DeleteResult } from "typeorm";
 import { User, UserInput } from "../../Entities/User";
 import dataSource from "../../utils";
 import { hash } from "argon2";
+import { usersRelations } from "../../utils/relations";
 
 @Resolver()
 export class UserResolver {
@@ -10,7 +11,7 @@ export class UserResolver {
   @Query(() => [User], { nullable: true })
   async FindAllUsers(): Promise<User[]> {
     const Users = await dataSource.getRepository(User).find({
-      relations: { comments: true },
+      relations: usersRelations,
     });
     return Users;
   }
@@ -19,7 +20,7 @@ export class UserResolver {
   async FindUser(@Arg("id", () => ID) id: number): Promise<User | null> {
     const user = await dataSource
       .getRepository(User)
-      .findOne({ where: { id } });
+      .findOne({ where: { id }, relations: usersRelations });
     return user;
   }
   ///////// MUTATION CREATE USER /////////////

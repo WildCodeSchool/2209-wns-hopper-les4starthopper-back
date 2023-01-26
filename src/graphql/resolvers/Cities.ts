@@ -2,6 +2,7 @@ import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
 import { DeleteResult } from "typeorm";
 import { City, CityInput } from "../../Entities/City";
 import dataSource from "../../utils";
+import { citiesRelation } from "../../utils/relations";
 
 @Resolver()
 export class CityResolver {
@@ -9,7 +10,7 @@ export class CityResolver {
   @Query(() => [City], { nullable: true })
   async Cities(): Promise<City[]> {
     const Cities = await dataSource.getRepository(City).find({
-      relations: ["user", "pointOfInterests"],
+      relations: citiesRelation,
     });
     return Cities;
   }
@@ -18,7 +19,7 @@ export class CityResolver {
   async city(@Arg("id", () => ID) id: number): Promise<City | null> {
     const city = await dataSource
       .getRepository(City)
-      .findOne({ where: { id } });
+      .findOne({ where: { id }, relations: citiesRelation });
     return city;
   }
   //////////  QUERY CITY BY NAME //////////
@@ -27,7 +28,7 @@ export class CityResolver {
     const lowerCaseName = name.toLowerCase();
     const city = await dataSource.getRepository(City).findOne({
       where: { name: lowerCaseName },
-      relations: ["pointOfInterests"],
+      relations: citiesRelation,
     });
     return city;
   }

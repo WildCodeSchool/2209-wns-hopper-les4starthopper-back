@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { ObjectType, Field, ID, InputType } from "type-graphql";
-import { TypeormLoader } from "type-graphql-dataloader";
 import { Comment } from "./Comment";
 import { Picture } from "./Picture";
 import { Category } from "./Category";
@@ -47,7 +46,10 @@ export class User {
   @Field(() => [Comment], { nullable: true })
   comments: Comment[];
 
-  @OneToMany(() => Picture, (picture) => picture.user, { nullable: true })
+  @OneToMany(() => Picture, (picture) => picture.user, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
   @Field(() => [Picture], { nullable: true })
   pictures: Picture[];
 
@@ -57,6 +59,7 @@ export class User {
 
   @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.user, {
     nullable: true,
+    onDelete: "CASCADE",
   })
   @Field(() => [PointOfInterest], { nullable: true })
   pointOfInterests: PointOfInterest[];

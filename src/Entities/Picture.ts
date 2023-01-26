@@ -12,7 +12,15 @@ export class Picture {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  name: string;
+  url: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  pointOfInterestId: number;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  userId: number;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
@@ -29,8 +37,11 @@ export class Picture {
   // @Field({ nullable: true })
   // updated_by: User;
 
-  @ManyToOne(() => User, (user) => user.pictures, { nullable: true })
-  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.pictures, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
+  @Field(() => User, { nullable: true })
   user: User;
 
   @ManyToOne(
@@ -38,14 +49,20 @@ export class Picture {
     (pointOfInterest) => pointOfInterest.pictures,
     { nullable: true }
   )
-  @Field(() => [PointOfInterest], { nullable: true })
+  @Field(() => PointOfInterest, { nullable: true })
   pointOfInterest: PointOfInterest;
 }
 
 @InputType()
 export class PictureInput {
   @Field({ nullable: true })
-  name: string;
+  url: string;
+
+  @Field({ nullable: true })
+  userId: number;
+
+  @Field({ nullable: true })
+  pointOfInterestId: number;
 
   @Field({ nullable: true })
   created_at: Date;

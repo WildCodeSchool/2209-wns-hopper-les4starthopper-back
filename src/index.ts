@@ -7,6 +7,7 @@ import { PointOfInterestResolver } from "./graphql/resolvers/PointOfInterests";
 import { buildSchema } from "type-graphql";
 import datasource from "./utils";
 import { CommentResolver } from "./graphql/resolvers/Comments";
+import { PictureResolver } from "./graphql/resolvers/Picture";
 
 const PORT = process.env.PORT || 4000;
 
@@ -18,6 +19,7 @@ async function bootstrap() {
       CommentResolver,
       CategoryResolver,
       PointOfInterestResolver,
+      PictureResolver,
     ],
   });
   const server = new ApolloServer({

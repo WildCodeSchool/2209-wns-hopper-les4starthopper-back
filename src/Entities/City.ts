@@ -36,6 +36,10 @@ export class City {
   @Field({ nullable: true })
   updated_at: Date;
 
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  userId: number;
+
   // @Column()
   // @Field()
   // created_by: User;
@@ -59,6 +63,9 @@ export class City {
 export class CityInput {
   @Field({ nullable: true })
   name: string;
+
+  @Field({ nullable: true })
+  userId: number;
 
   @Field({ nullable: true })
   latitude: string;
