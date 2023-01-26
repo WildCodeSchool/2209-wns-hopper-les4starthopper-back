@@ -5,6 +5,7 @@ import {
   PointOfInterestInput,
 } from "../../Entities/PointOfInterest";
 import dataSource from "../../utils";
+import { pointOfInterestRelations } from "../../utils/relations";
 
 @Resolver()
 export class PointOfInterestResolver {
@@ -14,7 +15,7 @@ export class PointOfInterestResolver {
     const PointOfinterests = await dataSource
       .getRepository(PointOfInterest)
       .find({
-        relations: ["user", "pictures", "comments", "categories", "city"],
+        relations: pointOfInterestRelations,
       });
     return PointOfinterests;
   }
@@ -25,10 +26,10 @@ export class PointOfInterestResolver {
   ): Promise<PointOfInterest | null> {
     const pointOfInterest = await dataSource
       .getRepository(PointOfInterest)
-      .findOne({ where: { id } });
+      .findOne({ where: { id }, relations: pointOfInterestRelations });
     return pointOfInterest;
   }
-  ///////// MUTATION CREATE POINT IF INTEREST /////////////
+  ///////// MUTATION CREATE POINT OF INTEREST /////////////
   @Mutation(() => PointOfInterest)
   async createPointOfInterest(
     @Arg("data") data: PointOfInterestInput

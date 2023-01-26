@@ -23,6 +23,10 @@ export class Category {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
+  userId: number;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   icon: string;
 
   @Column({ nullable: true })
@@ -54,6 +58,9 @@ export class Category {
 export class CategoryInput {
   @Field({ nullable: true })
   name: string;
+
+  @Field({ nullable: true })
+  userId: number;
 
   @Field({ nullable: true })
   icon: string;
