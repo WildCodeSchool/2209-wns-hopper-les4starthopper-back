@@ -14,6 +14,17 @@ export class PictureResolver {
     return pictures;
   }
 
+  @Query(() => Picture, { nullable: true })
+  async pictureByPOIId(
+    @Arg("pointOfInterestId") pointOfInterestId: number
+  ): Promise<Picture | null> {
+    const pictureByPOIId = await dataSource.getRepository(Picture).findOne({
+      where: { pointOfInterestId },
+      relations: picturesRelation,
+    });
+    return pictureByPOIId;
+  }
+
   @Mutation(() => Picture, { nullable: true })
   async uploadPicture(
     @Arg("data") data: PictureInput
