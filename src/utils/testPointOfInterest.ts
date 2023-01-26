@@ -1,6 +1,6 @@
 export const createPointOfInterest = `
-  mutation createPointOfInterest($data: PointOfInterestInput!) {
-    createPointOfInterest(data: $data) {
+  mutation createPointOfInterest($data: PointOfInterestInput!, $categoryId: Float!) {
+    createPointOfInterest(data: $data, categoryId: $categoryId) {
       id
       name
     }

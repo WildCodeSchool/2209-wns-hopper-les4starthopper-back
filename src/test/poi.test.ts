@@ -53,8 +53,10 @@ describe("point of interests", () => {
             name: "test city name xxx",
             description: "test description xxx",
           },
+          categoryId: 33,
         },
       });
+      console.log("🚀 ~ file: poi.test.ts:58 ~ it ~ result", result);
       poiId = result?.data?.createPointOfInterest?.id;
       description = result?.data?.createPointOfInterest?.description;
       expect(result?.data?.createPointOfInterest).toBeTruthy();
