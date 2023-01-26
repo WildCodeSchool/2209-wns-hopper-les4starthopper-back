@@ -92,7 +92,10 @@ export class PointOfInterest {
   @Field(() => City, { nullable: true })
   city: City;
 
-  @ManyToMany(() => Category, { nullable: true })
+  @ManyToMany(() => Category, (category) => category.pointOfInterests, {
+    cascade: true,
+    nullable: true,
+  })
   @JoinTable()
   categories: Category[];
 }
@@ -131,4 +134,10 @@ export class PointOfInterestInput {
 
   // @Field({ nullable: true })
   // updated_by: Date;
+}
+
+@InputType()
+export class CategoriesPOIInput {
+  @Field({ nullable: true })
+  categoriesId: number;
 }

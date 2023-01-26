@@ -47,7 +47,7 @@ export class Picture {
   @ManyToOne(
     () => PointOfInterest,
     (pointOfInterest) => pointOfInterest.pictures,
-    { nullable: true }
+    { nullable: true, onDelete: "CASCADE" }
   )
   @Field(() => PointOfInterest, { nullable: true })
   pointOfInterest: PointOfInterest;

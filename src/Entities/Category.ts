@@ -49,8 +49,11 @@ export class Category {
   @Field(() => User, { nullable: true })
   user: User;
 
-  @ManyToMany(() => PointOfInterest, { nullable: true })
-  @JoinTable()
+  @ManyToMany(
+    () => PointOfInterest,
+    (pointOfInterest) => pointOfInterest.categories,
+    { nullable: true }
+  )
   pointOfInterests: PointOfInterest[];
 }
 

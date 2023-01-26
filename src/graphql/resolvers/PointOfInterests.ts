@@ -1,8 +1,10 @@
 import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
 import { DeleteResult } from "typeorm";
+import { Category } from "../../Entities/Category";
 import {
   PointOfInterest,
   PointOfInterestInput,
+  CategoriesPOIInput,
 } from "../../Entities/PointOfInterest";
 import dataSource from "../../utils";
 import { pointOfInterestRelations } from "../../utils/relations";
@@ -32,9 +34,28 @@ export class PointOfInterestResolver {
   ///////// MUTATION CREATE POINT OF INTEREST /////////////
   @Mutation(() => PointOfInterest)
   async createPointOfInterest(
-    @Arg("data") data: PointOfInterestInput
+    @Arg("data") data: PointOfInterestInput,
+    @Arg("categoryId") categoryId: number
   ): Promise<PointOfInterest> {
-    return await dataSource.getRepository(PointOfInterest).save(data);
+    // category à modifier avec la récupération de category.name
+    const category = new Category();
+    await dataSource
+      .getRepository(Category)
+      .findOne({ where: { id: categoryId } });
+    const poiWithCategory = new PointOfInterest();
+    poiWithCategory.adress = data.adress;
+    poiWithCategory.name = data.name;
+    poiWithCategory.description = data.description;
+    poiWithCategory.latitude = data.latitude;
+    poiWithCategory.longitude = data.longitude;
+    poiWithCategory.cityId = data.cityId;
+    poiWithCategory.userId = data.userId;
+    poiWithCategory.categories = [category];
+    //const datas = { ...data, categoryData };
+    // data.categories = [{obj id:id}]
+    return await dataSource
+      .getRepository(PointOfInterest)
+      .save(poiWithCategory);
   }
   ///////// MUTATION DELETE POINT IF INTEREST /////////////
   @Mutation(() => PointOfInterest, { nullable: true })
@@ -49,7 +70,6 @@ export class PointOfInterestResolver {
       .where("id = :id", { id })
       .execute();
   }
-
   ///////// MUTATION UPDATE POINT OF INTEREST/////////////
   @Mutation(() => PointOfInterest, { nullable: true })
   async updatePointOfInterest(
