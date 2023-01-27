@@ -27,7 +27,6 @@ export class CategoryResolver {
   async createCategory(@Arg("data") data: CategoryInput): Promise<Category> {
     return await dataSource.getRepository(Category).save(data);
   }
-
   ///////// MUTATION UPDATE USERS/////////////
   @Mutation(() => Category, { nullable: true })
   async updateCategory(

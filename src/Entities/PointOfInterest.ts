@@ -57,22 +57,18 @@ export class PointOfInterest {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
+  createdById: number;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   adress: string;
-
-  // @Column()
-  // @Field()
-  // created_by: User;
-
-  // @Column({ nullable: true })
-  // @Field({ nullable: true })
-  // updated_by: User;
 
   @ManyToOne(() => User, (user) => user.pointOfInterests, {
     nullable: true,
     onDelete: "CASCADE",
   })
   @Field(() => User, { nullable: true })
-  user: User;
+  createdBy: User;
 
   @OneToMany(() => Comment, (comment) => comment.pointOfInterest, {
     onDelete: "CASCADE",
@@ -95,6 +91,7 @@ export class PointOfInterest {
   city: City;
 
   @ManyToMany(() => Category, (category) => category.pointOfInterests, {
+    onDelete: "CASCADE",
     cascade: true,
     nullable: true,
   })
@@ -113,6 +110,9 @@ export class PointOfInterestInput {
 
   @Field({ nullable: true })
   userId: number;
+
+  @Field({ nullable: true })
+  createdById: number;
 
   @Field({ nullable: true })
   cityId: number;

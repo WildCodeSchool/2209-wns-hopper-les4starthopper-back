@@ -12,7 +12,6 @@ import { Category } from "./Category";
 import { PointOfInterest } from "./PointOfInterest";
 import { City } from "./City";
 import { IsEmail, Matches } from "class-validator";
-import { NodeWithSelectionSet } from "graphql/validation/ValidationContext";
 import { UpdateDateColumn } from "typeorm/decorator/columns/UpdateDateColumn";
 
 @Entity()
@@ -34,45 +33,51 @@ export class User {
   @Field({ nullable: true })
   role: number;
 
+  @Column({ nullable: true })
+  @Field(() => ID, { nullable: true })
+  created_by: number;
+
+  @Column({ nullable: true })
+  @Field(() => ID, { nullable: true })
+  updated_by: number;
+
   @CreateDateColumn({ nullable: true })
   @Field({ nullable: true })
   created_at: Date;
-
-  // @Column({ nullable: true })
-  // @Field({ nullable: true })
-  // created_by: User;
 
   @UpdateDateColumn({ nullable: true })
   @Field({ nullable: true })
   updated_at: Date;
 
-  // @Column({ nullable: true })
-  // @Field({ nullable: true })
-  // updated_by: User;
-
-  @OneToMany(() => Comment, (comment) => comment.user, { nullable: true })
+  @OneToMany(() => Comment, (comment) => comment.createdBy, { nullable: true })
   @Field(() => [Comment], { nullable: true })
   comments: Comment[];
 
-  @OneToMany(() => Picture, (picture) => picture.user, {
+  @OneToMany(() => Picture, (picture) => picture.createdBy, {
     nullable: true,
     onDelete: "CASCADE",
   })
   @Field(() => [Picture], { nullable: true })
   pictures: Picture[];
 
-  @OneToMany(() => Category, (category) => category.user, { nullable: true })
+  @OneToMany(() => Category, (category) => category.createdBy, {
+    nullable: true,
+  })
   @Field(() => [Category], { nullable: true })
   categories: Category[];
 
-  @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.user, {
-    nullable: true,
-    onDelete: "CASCADE",
-  })
+  @OneToMany(
+    () => PointOfInterest,
+    (pointOfInterest) => pointOfInterest.createdBy,
+    {
+      nullable: true,
+      onDelete: "CASCADE",
+    }
+  )
   @Field(() => [PointOfInterest], { nullable: true })
   pointOfInterests: PointOfInterest[];
 
-  @OneToMany(() => City, (city) => city.user, { nullable: true })
+  @OneToMany(() => City, (city) => city.createdBy, { nullable: true })
   @Field(() => [City], { nullable: true })
   cities: City[];
 }
@@ -95,11 +100,11 @@ export class UserInput {
   created_at: Date;
 
   @Field({ nullable: true })
+  created_by: number;
+
+  @Field({ nullable: true })
+  updated_by: number;
+
+  @Field({ nullable: true })
   updated_at: Date;
-
-  // @Field({ nullable: true })
-  // created_by: Date;
-
-  // @Field({ nullable: true })
-  // updated_by: Date;
 }

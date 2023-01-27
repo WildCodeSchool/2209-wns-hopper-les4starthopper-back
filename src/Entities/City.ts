@@ -42,17 +42,13 @@ export class City {
   @Field({ nullable: true })
   userId: number;
 
-  // @Column()
-  // @Field()
-  // created_by: User;
-
-  // @Column({ nullable: true })
-  // @Field({ nullable: true })
-  // updated_by: User;
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  createdById: number;
 
   @ManyToOne(() => User, (user) => user.cities, { nullable: true })
   @Field(() => User, { nullable: true })
-  user: User;
+  createdBy: User;
 
   @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.city, {
     nullable: true,
@@ -70,6 +66,9 @@ export class CityInput {
   userId: number;
 
   @Field({ nullable: true })
+  createdById: number;
+
+  @Field({ nullable: true })
   latitude: string;
 
   @Field({ nullable: true })
@@ -80,10 +79,4 @@ export class CityInput {
 
   @Field({ nullable: true })
   updated_at: Date;
-
-  // @Field()
-  // created_by: Date;
-
-  // @Field({ nullable: true })
-  // updated_by: Date;
 }
