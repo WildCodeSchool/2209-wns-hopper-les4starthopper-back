@@ -97,6 +97,7 @@ export class PointOfInterest {
     nullable: true,
   })
   @JoinTable()
+  @Field(() => [Category], { nullable: true })
   categories: Category[];
 }
 

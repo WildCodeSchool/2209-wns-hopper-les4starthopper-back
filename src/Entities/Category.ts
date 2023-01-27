@@ -54,6 +54,7 @@ export class Category {
     (pointOfInterest) => pointOfInterest.categories,
     { nullable: true }
   )
+  @Field(() => [PointOfInterest], { nullable: true })
   pointOfInterests: PointOfInterest[];
 }
 

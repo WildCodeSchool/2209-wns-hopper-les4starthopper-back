@@ -37,25 +37,14 @@ export class PointOfInterestResolver {
     @Arg("data") data: PointOfInterestInput,
     @Arg("categoryId") categoryId: number
   ): Promise<PointOfInterest> {
-    // category à modifier avec la récupération de category.name
-    const category = new Category();
-    await dataSource
+    const category: any = await dataSource
       .getRepository(Category)
       .findOne({ where: { id: categoryId } });
-    const poiWithCategory = new PointOfInterest();
-    poiWithCategory.adress = data.adress;
-    poiWithCategory.name = data.name;
-    poiWithCategory.description = data.description;
-    poiWithCategory.latitude = data.latitude;
-    poiWithCategory.longitude = data.longitude;
-    poiWithCategory.cityId = data.cityId;
-    poiWithCategory.userId = data.userId;
-    poiWithCategory.categories = [category];
-    //const datas = { ...data, categoryData };
-    // data.categories = [{obj id:id}]
-    return await dataSource
-      .getRepository(PointOfInterest)
-      .save(poiWithCategory);
+    const datas = { ...data, categories: [category] };
+    return await dataSource.getRepository(PointOfInterest).save(datas);
+    // return await dataSource
+    //   .getRepository(PointOfInterest)
+    //   .save(poiWithCategory);
   }
   ///////// MUTATION DELETE POINT IF INTEREST /////////////
   @Mutation(() => PointOfInterest, { nullable: true })
