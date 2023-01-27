@@ -23,6 +23,10 @@ async function bootstrap() {
     ],
   });
   const server = new ApolloServer({
+    cors: {
+      origin: "*",
+      credentials: true,
+    },
     schema,
   });
 
