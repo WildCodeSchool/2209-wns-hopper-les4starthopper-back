@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+} from "typeorm";
 import { ObjectType, Field, ID, InputType } from "type-graphql";
 import { Comment } from "./Comment";
 import { Picture } from "./Picture";
@@ -6,6 +12,8 @@ import { Category } from "./Category";
 import { PointOfInterest } from "./PointOfInterest";
 import { City } from "./City";
 import { IsEmail, Matches } from "class-validator";
+import { NodeWithSelectionSet } from "graphql/validation/ValidationContext";
+import { UpdateDateColumn } from "typeorm/decorator/columns/UpdateDateColumn";
 
 @Entity()
 @ObjectType()
@@ -26,7 +34,7 @@ export class User {
   @Field({ nullable: true })
   role: number;
 
-  @Column({ nullable: true })
+  @CreateDateColumn({ nullable: true })
   @Field({ nullable: true })
   created_at: Date;
 
@@ -34,7 +42,7 @@ export class User {
   // @Field({ nullable: true })
   // created_by: User;
 
-  @Column({ nullable: true })
+  @UpdateDateColumn({ nullable: true })
   @Field({ nullable: true })
   updated_at: Date;
 
@@ -89,9 +97,9 @@ export class UserInput {
   @Field({ nullable: true })
   updated_at: Date;
 
-  @Field({ nullable: true })
-  created_by: Date;
+  // @Field({ nullable: true })
+  // created_by: Date;
 
-  @Field({ nullable: true })
-  updated_by: Date;
+  // @Field({ nullable: true })
+  // updated_by: Date;
 }

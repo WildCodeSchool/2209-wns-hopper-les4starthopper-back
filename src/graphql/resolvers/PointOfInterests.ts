@@ -4,7 +4,6 @@ import { Category } from "../../Entities/Category";
 import {
   PointOfInterest,
   PointOfInterestInput,
-  CategoriesPOIInput,
 } from "../../Entities/PointOfInterest";
 import dataSource from "../../utils";
 import { pointOfInterestRelations } from "../../utils/relations";
