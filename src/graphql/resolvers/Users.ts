@@ -2,7 +2,7 @@ import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
 import { DeleteResult } from "typeorm";
 import { User, UserInput } from "../../Entities/User";
 import dataSource from "../../utils";
-import { hash } from "argon2";
+import { hash, verify } from "argon2";
 
 @Resolver()
 export class UserResolver {
@@ -28,6 +28,30 @@ export class UserResolver {
     data.password = await hash(data.password);
     return await dataSource.getRepository(User).save(data);
   }
+
+  ///////////// MUTATION SIGNIN //////////////
+  @Mutation(() => User, { nullable: true })
+  async signin(
+    @Arg("email") email: string,
+    @Arg("password") password: string
+  ): Promise<User | null> {
+    try {
+      const user = await dataSource
+        .getRepository(User)
+        .findOne({ where: { email: email } });
+      if (!user) {
+        return null;
+      }
+      if (await verify(user.password, password)) {
+        return user;
+      } else {
+        return null;
+      }
+    } catch {
+      return null;
+    }
+  }
+
   ///////// MUTATION DELETE USER /////////////
   @Mutation(() => User, { nullable: true })
   async deleteUser(
