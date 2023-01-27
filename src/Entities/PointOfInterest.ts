@@ -31,11 +31,11 @@ export class PointOfInterest {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  latitude: number;
+  latitude: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  longitude: number;
+  longitude: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
@@ -45,6 +45,18 @@ export class PointOfInterest {
   @Field({ nullable: true })
   updated_at: Date;
 
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  cityId: number;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  userId: number;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  adress: string;
+
   // @Column()
   // @Field()
   // created_by: User;
@@ -53,11 +65,15 @@ export class PointOfInterest {
   // @Field({ nullable: true })
   // updated_by: User;
 
-  @ManyToOne(() => User, (user) => user.pointOfInterests, { nullable: true })
+  @ManyToOne(() => User, (user) => user.pointOfInterests, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
   @Field(() => User, { nullable: true })
   user: User;
 
   @OneToMany(() => Comment, (comment) => comment.pointOfInterest, {
+    onDelete: "CASCADE",
     nullable: true,
   })
   @Field(() => [Comment], { nullable: true })
@@ -69,12 +85,19 @@ export class PointOfInterest {
   @Field(() => [Picture], { nullable: true })
   pictures: Picture[];
 
-  @ManyToOne(() => City, (city) => city.pointOfInterests, { nullable: true })
-  @Field(() => [City], { nullable: true })
+  @ManyToOne(() => City, (city) => city.pointOfInterests, {
+    onDelete: "CASCADE",
+    nullable: true,
+  })
+  @Field(() => City, { nullable: true })
   city: City;
 
-  @ManyToMany(() => Category, { nullable: true })
+  @ManyToMany(() => Category, (category) => category.pointOfInterests, {
+    cascade: true,
+    nullable: true,
+  })
   @JoinTable()
+  @Field(() => [Category], { nullable: true })
   categories: Category[];
 }
 
@@ -84,13 +107,22 @@ export class PointOfInterestInput {
   name: string;
 
   @Field({ nullable: true })
+  adress: string;
+
+  @Field({ nullable: true })
+  userId: number;
+
+  @Field({ nullable: true })
+  cityId: number;
+
+  @Field({ nullable: true })
   description: string;
 
   @Field({ nullable: true })
-  latitude: number;
+  latitude: string;
 
   @Field({ nullable: true })
-  longitude: number;
+  longitude: string;
 
   @Field({ nullable: true })
   created_at: Date;
@@ -103,4 +135,10 @@ export class PointOfInterestInput {
 
   // @Field({ nullable: true })
   // updated_by: Date;
+}
+
+@InputType()
+export class CategoriesPOIInput {
+  @Field({ nullable: true })
+  categoriesId: number;
 }

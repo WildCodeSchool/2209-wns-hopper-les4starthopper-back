@@ -14,7 +14,7 @@ export class User {
   @Field(() => ID, { nullable: true })
   id: number;
 
-  @Column({ nullable: true, unique: true })
+  @Column({ unique: true })
   @Field({ nullable: true })
   email: string;
 
@@ -46,7 +46,10 @@ export class User {
   @Field(() => [Comment], { nullable: true })
   comments: Comment[];
 
-  @OneToMany(() => Picture, (picture) => picture.user, { nullable: true })
+  @OneToMany(() => Picture, (picture) => picture.user, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
   @Field(() => [Picture], { nullable: true })
   pictures: Picture[];
 
@@ -56,6 +59,7 @@ export class User {
 
   @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.user, {
     nullable: true,
+    onDelete: "CASCADE",
   })
   @Field(() => [PointOfInterest], { nullable: true })
   pointOfInterests: PointOfInterest[];
@@ -72,6 +76,7 @@ export class UserInput {
   email: string;
 
   @Field({ nullable: true })
+  // 1 maj ... 8 caractères minimum
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,64}$/)
   password: string;
 

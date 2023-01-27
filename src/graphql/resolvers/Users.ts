@@ -3,6 +3,7 @@ import { DeleteResult } from "typeorm";
 import { User, UserInput } from "../../Entities/User";
 import dataSource from "../../utils";
 import { hash, verify } from "argon2";
+import { usersRelations } from "../../utils/relations";
 
 @Resolver()
 export class UserResolver {
@@ -10,7 +11,7 @@ export class UserResolver {
   @Query(() => [User], { nullable: true })
   async FindAllUsers(): Promise<User[]> {
     const Users = await dataSource.getRepository(User).find({
-      relations: { comments: true },
+      relations: usersRelations,
     });
     return Users;
   }
@@ -19,7 +20,7 @@ export class UserResolver {
   async FindUser(@Arg("id", () => ID) id: number): Promise<User | null> {
     const user = await dataSource
       .getRepository(User)
-      .findOne({ where: { id } });
+      .findOne({ where: { id }, relations: usersRelations });
     return user;
   }
   ///////// MUTATION CREATE USER /////////////
@@ -69,7 +70,7 @@ export class UserResolver {
   @Mutation(() => User, { nullable: true })
   async updateUser(
     @Arg("id", () => ID) id: number,
-    @Arg("role", { nullable: true }) role: number
+    @Arg("role") role: number
   ): Promise<User | null> {
     const updateUser = await dataSource
       .getRepository(User)
@@ -83,7 +84,7 @@ export class UserResolver {
     return await dataSource.getRepository(User).save(updateUser);
   }
   ///////// MUTATION DELETE USERS/////////////
-  @Mutation(() => User, { nullable: true })
+  @Mutation(() => User)
   async deleteUsers(): Promise<DeleteResult | null> {
     return await dataSource
       .getRepository(User)

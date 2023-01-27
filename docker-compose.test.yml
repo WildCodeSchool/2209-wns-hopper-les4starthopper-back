@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  api:
+    # image: api
+    build: ./
+    ports:
+      - 5070:4000
+    volumes:
+      - ./src:/app/src
+      - ./test:/app/test
+    environment:
+      - DB_HOST=db
+    # run tests instead of launching api
+    command: npm test ./src/test --watch
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: supersecret

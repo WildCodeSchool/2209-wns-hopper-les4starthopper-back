@@ -23,6 +23,10 @@ export class Category {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
+  userId: number;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   icon: string;
 
   @Column({ nullable: true })
@@ -45,8 +49,12 @@ export class Category {
   @Field(() => User, { nullable: true })
   user: User;
 
-  @ManyToMany(() => PointOfInterest, { nullable: true })
-  @JoinTable()
+  @ManyToMany(
+    () => PointOfInterest,
+    (pointOfInterest) => pointOfInterest.categories,
+    { nullable: true }
+  )
+  @Field(() => [PointOfInterest], { nullable: true })
   pointOfInterests: PointOfInterest[];
 }
 
@@ -54,6 +62,9 @@ export class Category {
 export class CategoryInput {
   @Field({ nullable: true })
   name: string;
+
+  @Field({ nullable: true })
+  userId: number;
 
   @Field({ nullable: true })
   icon: string;
