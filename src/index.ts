@@ -24,6 +24,10 @@ async function bootstrap() {
   });
   const server = new ApolloServer({
     schema,
+    cors: {
+      origin: "*",
+      credentials: true,
+    },
   });
 
   const { url } = await server.listen(PORT);

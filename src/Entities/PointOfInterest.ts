@@ -129,12 +129,6 @@ export class PointOfInterestInput {
 
   @Field({ nullable: true })
   updated_at: Date;
-
-  // @Field()
-  // created_by: Date;
-
-  // @Field({ nullable: true })
-  // updated_by: Date;
 }
 
 @InputType()

@@ -42,9 +42,6 @@ export class PointOfInterestResolver {
       .findOne({ where: { id: categoryId } });
     const datas = { ...data, categories: [category] };
     return await dataSource.getRepository(PointOfInterest).save(datas);
-    // return await dataSource
-    //   .getRepository(PointOfInterest)
-    //   .save(poiWithCategory);
   }
   ///////// MUTATION DELETE POINT IF INTEREST /////////////
   @Mutation(() => PointOfInterest, { nullable: true })
