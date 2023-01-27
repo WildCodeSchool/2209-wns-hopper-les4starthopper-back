@@ -3,7 +3,6 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  JoinTable,
   ManyToMany,
 } from "typeorm";
 import { ObjectType, Field, ID, InputType } from "type-graphql";
