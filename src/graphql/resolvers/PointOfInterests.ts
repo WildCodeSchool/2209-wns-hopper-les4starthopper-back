@@ -1,10 +1,13 @@
 import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
 import { DeleteResult } from "typeorm";
+import { Category } from "../../Entities/Category";
 import {
   PointOfInterest,
   PointOfInterestInput,
+  CategoriesPOIInput,
 } from "../../Entities/PointOfInterest";
 import dataSource from "../../utils";
+import { pointOfInterestRelations } from "../../utils/relations";
 
 @Resolver()
 export class PointOfInterestResolver {
@@ -14,7 +17,7 @@ export class PointOfInterestResolver {
     const PointOfinterests = await dataSource
       .getRepository(PointOfInterest)
       .find({
-        relations: ["user", "pictures", "comments", "categories", "city"],
+        relations: pointOfInterestRelations,
       });
     return PointOfinterests;
   }
@@ -25,15 +28,23 @@ export class PointOfInterestResolver {
   ): Promise<PointOfInterest | null> {
     const pointOfInterest = await dataSource
       .getRepository(PointOfInterest)
-      .findOne({ where: { id } });
+      .findOne({ where: { id }, relations: pointOfInterestRelations });
     return pointOfInterest;
   }
-  ///////// MUTATION CREATE POINT IF INTEREST /////////////
+  ///////// MUTATION CREATE POINT OF INTEREST /////////////
   @Mutation(() => PointOfInterest)
   async createPointOfInterest(
-    @Arg("data") data: PointOfInterestInput
+    @Arg("data") data: PointOfInterestInput,
+    @Arg("categoryId") categoryId: number
   ): Promise<PointOfInterest> {
-    return await dataSource.getRepository(PointOfInterest).save(data);
+    const category: any = await dataSource
+      .getRepository(Category)
+      .findOne({ where: { id: categoryId } });
+    const datas = { ...data, categories: [category] };
+    return await dataSource.getRepository(PointOfInterest).save(datas);
+    // return await dataSource
+    //   .getRepository(PointOfInterest)
+    //   .save(poiWithCategory);
   }
   ///////// MUTATION DELETE POINT IF INTEREST /////////////
   @Mutation(() => PointOfInterest, { nullable: true })
@@ -48,7 +59,6 @@ export class PointOfInterestResolver {
       .where("id = :id", { id })
       .execute();
   }
-
   ///////// MUTATION UPDATE POINT OF INTEREST/////////////
   @Mutation(() => PointOfInterest, { nullable: true })
   async updatePointOfInterest(

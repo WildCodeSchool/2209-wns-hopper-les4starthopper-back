@@ -2,6 +2,7 @@ import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
 import { DeleteResult } from "typeorm";
 import { Category, CategoryInput } from "../../Entities/Category";
 import dataSource from "../../utils";
+import { categoriesRelations } from "../../utils/relations";
 
 @Resolver()
 export class CategoryResolver {
@@ -9,7 +10,7 @@ export class CategoryResolver {
   @Query(() => [Category], { nullable: true })
   async Categories(): Promise<Category[]> {
     const Categories = await dataSource.getRepository(Category).find({
-      relations: ["user", "pointOfInterests"],
+      relations: categoriesRelations,
     });
     return Categories;
   }
@@ -18,7 +19,7 @@ export class CategoryResolver {
   async category(@Arg("id", () => ID) id: number): Promise<Category | null> {
     const category = await dataSource
       .getRepository(Category)
-      .findOne({ where: { id } });
+      .findOne({ where: { id }, relations: categoriesRelations });
     return category;
   }
   ///////// MUTATION CREATE CATEGORY /////////////
@@ -31,6 +32,7 @@ export class CategoryResolver {
   @Mutation(() => Category, { nullable: true })
   async updateCategory(
     @Arg("id", () => ID) id: number,
+    @Arg("name") name: string,
     @Arg("icon") icon: string
   ): Promise<Category | null> {
     const updateCategory = await dataSource
@@ -39,8 +41,9 @@ export class CategoryResolver {
     if (updateCategory === null) {
       return null;
     }
-    if (icon != null) {
+    if (icon != null && name != null) {
       updateCategory.icon = icon;
+      updateCategory.name = name;
     }
     return await dataSource.getRepository(Category).save(updateCategory);
   }

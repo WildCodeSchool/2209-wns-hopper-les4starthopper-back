@@ -2,6 +2,7 @@ import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
 import { DeleteResult } from "typeorm";
 import { Comment, CommentInput } from "../../Entities/Comment";
 import dataSource from "../../utils";
+import { commentsRelations } from "../../utils/relations";
 
 @Resolver()
 export class CommentResolver {
@@ -9,16 +10,17 @@ export class CommentResolver {
   @Query(() => [Comment], { nullable: true })
   async Comments(): Promise<Comment[]> {
     const Comments = await dataSource.getRepository(Comment).find({
-      relations: { user: true },
+      relations: commentsRelations,
     });
     return Comments;
   }
   ///////// QUERY FIND ONE COMMENT /////////////
   @Query(() => Comment, { nullable: true })
   async Comment(@Arg("id", () => ID) id: number): Promise<Comment | null> {
-    const comment = await dataSource
-      .getRepository(Comment)
-      .findOne({ where: { id }, relations: { user: true } });
+    const comment = await dataSource.getRepository(Comment).findOne({
+      where: { id },
+      relations: commentsRelations,
+    });
     return comment;
   }
   ///////// MUTATION CREATE COMMENT /////////////
@@ -31,7 +33,8 @@ export class CommentResolver {
   @Mutation(() => Comment, { nullable: true })
   async updateComment(
     @Arg("id", () => ID) id: number,
-    @Arg("note") note: number
+    @Arg("note") note: number,
+    @Arg("comment") comment: string
   ): Promise<Comment | null> {
     const updateComment = await dataSource
       .getRepository(Comment)
@@ -39,8 +42,9 @@ export class CommentResolver {
     if (updateComment === null) {
       return null;
     }
-    if (note != null) {
+    if (note != null || comment != null) {
       updateComment.note = note;
+      updateComment.comment = comment;
     }
     return await dataSource.getRepository(Comment).save(updateComment);
   }
