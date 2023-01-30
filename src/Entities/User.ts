@@ -4,6 +4,8 @@ import {
   Column,
   OneToMany,
   CreateDateColumn,
+  OneToOne,
+  ManyToOne,
 } from "typeorm";
 import { ObjectType, Field, ID, InputType } from "type-graphql";
 import { Comment } from "./Comment";
@@ -35,11 +37,11 @@ export class User {
 
   @Column({ nullable: true })
   @Field(() => ID, { nullable: true })
-  created_by: number;
+  createdById: number;
 
   @Column({ nullable: true })
   @Field(() => ID, { nullable: true })
-  updated_by: number;
+  updatedById: number;
 
   @CreateDateColumn({ nullable: true })
   @Field({ nullable: true })
@@ -48,6 +50,14 @@ export class User {
   @UpdateDateColumn({ nullable: true })
   @Field({ nullable: true })
   updated_at: Date;
+
+  @ManyToOne(() => User)
+  @Field(() => User, { nullable: true })
+  createdBy: User;
+
+  @ManyToOne(() => User)
+  @Field(() => User, { nullable: true })
+  updatedBy: User;
 
   @OneToMany(() => Comment, (comment) => comment.createdBy, { nullable: true })
   @Field(() => [Comment], { nullable: true })
@@ -100,10 +110,10 @@ export class UserInput {
   created_at: Date;
 
   @Field({ nullable: true })
-  created_by: number;
+  createdById: number;
 
   @Field({ nullable: true })
-  updated_by: number;
+  updatedById: number;
 
   @Field({ nullable: true })
   updated_at: Date;

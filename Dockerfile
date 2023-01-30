@@ -16,6 +16,6 @@ COPY package-lock.json package-lock.json
 RUN npm i
 COPY src src
 COPY tsconfig.json tsconfig.json
-COPY test test
+COPY /src/test /src/test
 COPY jest.config.js jest.config.js
 CMD npm start 

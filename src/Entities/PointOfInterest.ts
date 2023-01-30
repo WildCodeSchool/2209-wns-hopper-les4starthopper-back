@@ -61,6 +61,10 @@ export class PointOfInterest {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
+  updatedById: number;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   adress: string;
 
   @ManyToOne(() => User, (user) => user.pointOfInterests, {
@@ -69,6 +73,13 @@ export class PointOfInterest {
   })
   @Field(() => User, { nullable: true })
   createdBy: User;
+
+  @ManyToOne(() => User, (user) => user.pointOfInterests, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
+  @Field(() => User, { nullable: true })
+  updatedBy: User;
 
   @OneToMany(() => Comment, (comment) => comment.pointOfInterest, {
     onDelete: "CASCADE",
@@ -113,6 +124,9 @@ export class PointOfInterestInput {
 
   @Field({ nullable: true })
   createdById: number;
+
+  @Field({ nullable: true })
+  updatedById: number;
 
   @Field({ nullable: true })
   cityId: number;

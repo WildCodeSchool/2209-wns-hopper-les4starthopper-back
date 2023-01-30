@@ -1,5 +1,6 @@
 export const citiesRelation = [
   "createdBy",
+  "updatedBy",
   // "user.comments",
   // "user.pictures",
   // "user.categories",
@@ -13,6 +14,8 @@ export const citiesRelation = [
   // "pointOfInterests.categories",
 ];
 export const usersRelations = [
+  "createdBy",
+  "updatedBy",
   "comments",
   // "comments.user",
   // "comments.pointOfInterest",
@@ -35,6 +38,7 @@ export const usersRelations = [
 ];
 export const pointOfInterestRelations = [
   "createdBy",
+  "updatedBy",
   // "user.comments",
   // "user.pictures",
   // "user.categories",
@@ -55,6 +59,7 @@ export const pointOfInterestRelations = [
 ];
 export const commentsRelations = [
   "createdBy",
+  "updatedBy",
   // "user.pointOfInterests",
   // "user.cities",
   "pointOfInterest",
@@ -63,6 +68,7 @@ export const commentsRelations = [
 ];
 export const categoriesRelations = [
   "createdBy",
+  "updatedBy",
   //"createdBy.comments",
   // "createdBy.pictures",
   // "createdBy.categories",

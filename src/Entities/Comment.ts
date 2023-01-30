@@ -38,6 +38,10 @@ export class Comment {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
+  updatedById: number;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   pointOfInterestId: number;
 
   @ManyToOne(() => User, (user) => user.comments, {
@@ -46,6 +50,13 @@ export class Comment {
   })
   @Field(() => User, { nullable: true })
   createdBy: User;
+
+  @ManyToOne(() => User, (user) => user.comments, {
+    onDelete: "CASCADE",
+    nullable: true,
+  })
+  @Field(() => User, { nullable: true })
+  updatedBy: User;
 
   @ManyToOne(
     () => PointOfInterest,
@@ -63,6 +74,9 @@ export class CommentInput {
 
   @Field({ nullable: true })
   createdById: number;
+
+  @Field({ nullable: true })
+  updatedById: number;
 
   @Field({ nullable: true })
   pointOfInterestId: number;

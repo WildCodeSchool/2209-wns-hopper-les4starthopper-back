@@ -46,9 +46,23 @@ export class City {
   @Field({ nullable: true })
   createdById: number;
 
-  @ManyToOne(() => User, (user) => user.cities, { nullable: true })
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  updatedById: number;
+
+  @ManyToOne(() => User, (user) => user.cities, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
   @Field(() => User, { nullable: true })
   createdBy: User;
+
+  @ManyToOne(() => User, (user) => user.cities, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
+  @Field(() => User, { nullable: true })
+  updatedBy: User;
 
   @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.city, {
     nullable: true,
@@ -67,6 +81,9 @@ export class CityInput {
 
   @Field({ nullable: true })
   createdById: number;
+
+  @Field({ nullable: true })
+  updatedById: number;
 
   @Field({ nullable: true })
   latitude: string;

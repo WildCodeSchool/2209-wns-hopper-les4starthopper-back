@@ -32,6 +32,10 @@ export class Category {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
+  updatedById: number;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   icon: string;
 
   @CreateDateColumn({ nullable: true })
@@ -44,9 +48,17 @@ export class Category {
 
   @ManyToOne(() => User, (user) => user.categories, {
     nullable: true,
+    onDelete: "CASCADE",
   })
   @Field(() => User, { nullable: true })
   createdBy: User;
+
+  @ManyToOne(() => User, (user) => user.categories, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
+  @Field(() => User, { nullable: true })
+  updatedBy: User;
 
   @ManyToMany(
     () => PointOfInterest,
@@ -67,6 +79,9 @@ export class CategoryInput {
 
   @Field({ nullable: true })
   createdById: number;
+
+  @Field({ nullable: true })
+  updatedById: number;
 
   @Field({ nullable: true })
   icon: string;
