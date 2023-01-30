@@ -28,10 +28,6 @@ async function bootstrap() {
       credentials: true,
     },
     schema,
-    cors: {
-      origin: "*",
-      credentials: true,
-    },
   });
 
   const { url } = await server.listen(PORT);
