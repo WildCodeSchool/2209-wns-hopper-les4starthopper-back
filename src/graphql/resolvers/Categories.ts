@@ -14,7 +14,7 @@ export class CategoryResolver {
     });
     return Categories;
   }
-  ///////// QUERY FIND ONE Category /////////////
+  ///////// QUERY FIND ONE CATEGORY /////////////
   @Query(() => Category, { nullable: true })
   async category(@Arg("id", () => ID) id: number): Promise<Category | null> {
     const category = await dataSource
@@ -27,13 +27,11 @@ export class CategoryResolver {
   async createCategory(@Arg("data") data: CategoryInput): Promise<Category> {
     return await dataSource.getRepository(Category).save(data);
   }
-
-  ///////// MUTATION UPDATE USERS/////////////
+  ///////// MUTATION UPDATE CATEGORY/////////////
   @Mutation(() => Category, { nullable: true })
   async updateCategory(
     @Arg("id", () => ID) id: number,
-    @Arg("name") name: string,
-    @Arg("icon") icon: string
+    @Arg("data") data: CategoryInput
   ): Promise<Category | null> {
     const updateCategory = await dataSource
       .getRepository(Category)
@@ -41,10 +39,11 @@ export class CategoryResolver {
     if (updateCategory === null) {
       return null;
     }
-    if (icon != null && name != null) {
-      updateCategory.icon = icon;
-      updateCategory.name = name;
+    if (data.icon != null && data.name != null) {
+      updateCategory.icon = data.icon;
+      updateCategory.name = data.name;
     }
+    updateCategory.updatedById = data.updatedById;
     return await dataSource.getRepository(Category).save(updateCategory);
   }
 

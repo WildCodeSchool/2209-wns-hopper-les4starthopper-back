@@ -3,12 +3,13 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  JoinTable,
   ManyToMany,
 } from "typeorm";
 import { ObjectType, Field, ID, InputType } from "type-graphql";
 import { User } from "./User";
 import { PointOfInterest } from "./PointOfInterest";
+import { CreateDateColumn } from "typeorm/decorator/columns/CreateDateColumn";
+import { UpdateDateColumn } from "typeorm/decorator/columns/UpdateDateColumn";
 
 @Entity()
 @ObjectType()
@@ -27,32 +28,42 @@ export class Category {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  icon: string;
+  createdById: number;
 
   @Column({ nullable: true })
+  @Field({ nullable: true })
+  updatedById: number;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  icon: string;
+
+  @CreateDateColumn({ nullable: true })
   @Field({ nullable: true })
   created_at: Date;
 
-  @Column({ nullable: true })
+  @UpdateDateColumn({ nullable: true })
   @Field({ nullable: true })
   updated_at: Date;
 
-  // @Column()
-  // @Field()
-  // created_by: User;
-
-  // @Column({ nullable: true })
-  // @Field({ nullable: true })
-  // updated_by: User;
-
-  @ManyToOne(() => User, (user) => user.categories, { nullable: true })
+  @ManyToOne(() => User, (user) => user.categories, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
   @Field(() => User, { nullable: true })
-  user: User;
+  createdBy: User;
+
+  @ManyToOne(() => User, (user) => user.categories, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
+  @Field(() => User, { nullable: true })
+  updatedBy: User;
 
   @ManyToMany(
     () => PointOfInterest,
     (pointOfInterest) => pointOfInterest.categories,
-    { nullable: true }
+    { onDelete: "CASCADE", nullable: true }
   )
   @Field(() => [PointOfInterest], { nullable: true })
   pointOfInterests: PointOfInterest[];
@@ -67,6 +78,12 @@ export class CategoryInput {
   userId: number;
 
   @Field({ nullable: true })
+  createdById: number;
+
+  @Field({ nullable: true })
+  updatedById: number;
+
+  @Field({ nullable: true })
   icon: string;
 
   @Field({ nullable: true })
@@ -74,10 +91,4 @@ export class CategoryInput {
 
   @Field({ nullable: true })
   updated_at: Date;
-
-  // @Field()
-  // created_by: User;
-
-  // @Field({ nullable: true })
-  // updated_by: User;
 }

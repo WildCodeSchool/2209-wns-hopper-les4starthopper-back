@@ -33,8 +33,7 @@ export class CommentResolver {
   @Mutation(() => Comment, { nullable: true })
   async updateComment(
     @Arg("id", () => ID) id: number,
-    @Arg("note") note: number,
-    @Arg("comment") comment: string
+    @Arg("data") data: CommentInput
   ): Promise<Comment | null> {
     const updateComment = await dataSource
       .getRepository(Comment)
@@ -42,10 +41,11 @@ export class CommentResolver {
     if (updateComment === null) {
       return null;
     }
-    if (note != null || comment != null) {
-      updateComment.note = note;
-      updateComment.comment = comment;
+    if (data.note != null || data.comment != null) {
+      updateComment.note = data.note;
+      updateComment.comment = data.comment;
     }
+    updateComment.updatedById = data.updatedById;
     return await dataSource.getRepository(Comment).save(updateComment);
   }
 

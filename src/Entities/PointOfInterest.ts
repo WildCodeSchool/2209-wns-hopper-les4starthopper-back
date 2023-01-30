@@ -13,6 +13,8 @@ import { Comment } from "./Comment";
 import { Picture } from "./Picture";
 import { City } from "./City";
 import { Category } from "./Category";
+import { CreateDateColumn } from "typeorm/decorator/columns/CreateDateColumn";
+import { UpdateDateColumn } from "typeorm/decorator/columns/UpdateDateColumn";
 
 @Entity()
 @ObjectType()
@@ -37,11 +39,11 @@ export class PointOfInterest {
   @Field({ nullable: true })
   longitude: string;
 
-  @Column({ nullable: true })
+  @CreateDateColumn({ nullable: true })
   @Field({ nullable: true })
   created_at: Date;
 
-  @Column({ nullable: true })
+  @UpdateDateColumn({ nullable: true })
   @Field({ nullable: true })
   updated_at: Date;
 
@@ -55,22 +57,29 @@ export class PointOfInterest {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
+  createdById: number;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  updatedById: number;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   adress: string;
-
-  // @Column()
-  // @Field()
-  // created_by: User;
-
-  // @Column({ nullable: true })
-  // @Field({ nullable: true })
-  // updated_by: User;
 
   @ManyToOne(() => User, (user) => user.pointOfInterests, {
     nullable: true,
     onDelete: "CASCADE",
   })
   @Field(() => User, { nullable: true })
-  user: User;
+  createdBy: User;
+
+  @ManyToOne(() => User, (user) => user.pointOfInterests, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
+  @Field(() => User, { nullable: true })
+  updatedBy: User;
 
   @OneToMany(() => Comment, (comment) => comment.pointOfInterest, {
     onDelete: "CASCADE",
@@ -93,6 +102,7 @@ export class PointOfInterest {
   city: City;
 
   @ManyToMany(() => Category, (category) => category.pointOfInterests, {
+    onDelete: "CASCADE",
     cascade: true,
     nullable: true,
   })
@@ -113,6 +123,12 @@ export class PointOfInterestInput {
   userId: number;
 
   @Field({ nullable: true })
+  createdById: number;
+
+  @Field({ nullable: true })
+  updatedById: number;
+
+  @Field({ nullable: true })
   cityId: number;
 
   @Field({ nullable: true })
@@ -129,12 +145,6 @@ export class PointOfInterestInput {
 
   @Field({ nullable: true })
   updated_at: Date;
-
-  // @Field()
-  // created_by: Date;
-
-  // @Field({ nullable: true })
-  // updated_by: Date;
 }
 
 @InputType()

@@ -4,7 +4,6 @@ import { Category } from "../../Entities/Category";
 import {
   PointOfInterest,
   PointOfInterestInput,
-  CategoriesPOIInput,
 } from "../../Entities/PointOfInterest";
 import dataSource from "../../utils";
 import { pointOfInterestRelations } from "../../utils/relations";
@@ -42,9 +41,6 @@ export class PointOfInterestResolver {
       .findOne({ where: { id: categoryId } });
     const datas = { ...data, categories: [category] };
     return await dataSource.getRepository(PointOfInterest).save(datas);
-    // return await dataSource
-    //   .getRepository(PointOfInterest)
-    //   .save(poiWithCategory);
   }
   ///////// MUTATION DELETE POINT IF INTEREST /////////////
   @Mutation(() => PointOfInterest, { nullable: true })
@@ -63,7 +59,7 @@ export class PointOfInterestResolver {
   @Mutation(() => PointOfInterest, { nullable: true })
   async updatePointOfInterest(
     @Arg("id", () => ID) id: number,
-    @Arg("description") description: string
+    @Arg("data") data: PointOfInterestInput
   ): Promise<PointOfInterest | null> {
     const updatePointOfInterest = await dataSource
       .getRepository(PointOfInterest)
@@ -71,9 +67,10 @@ export class PointOfInterestResolver {
     if (updatePointOfInterest === null) {
       return null;
     }
-    if (description != null) {
-      updatePointOfInterest.description = description;
+    if (data.description != null) {
+      updatePointOfInterest.description = data.description;
     }
+    updatePointOfInterest.updatedById = data.updatedById;
     return await dataSource
       .getRepository(PointOfInterest)
       .save(updatePointOfInterest);
