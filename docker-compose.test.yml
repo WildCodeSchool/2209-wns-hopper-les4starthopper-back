@@ -8,7 +8,7 @@ services:
       - 5070:4000
     volumes:
       - ./src:/app/src
-      - ./test:/app/test
+      - ./src/test:/app/src/test
     environment:
       - DB_HOST=db
     # run tests instead of launching api

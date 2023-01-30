@@ -41,6 +41,24 @@ export class CityResolver {
     };
     return await dataSource.getRepository(City).save(datas);
   }
+  ////////// MUTATION UPDATE CITY //////////
+  @Mutation(() => City, { nullable: true })
+  async updateCity(
+    @Arg("id", () => ID) id: number,
+    @Arg("data") data: CityInput
+  ): Promise<City | null> {
+    const updateCity = await dataSource
+      .getRepository(City)
+      .findOne({ where: { id } });
+    if (updateCity === null) {
+      return null;
+    }
+    if (data.name != null) {
+      updateCity.name = data.name;
+    }
+    updateCity.updatedById = data.updatedById;
+    return await dataSource.getRepository(City).save(updateCity);
+  }
   ///////// MUTATION DELETE CITY /////////////
   @Mutation(() => City, { nullable: true })
   async deleteCity(
