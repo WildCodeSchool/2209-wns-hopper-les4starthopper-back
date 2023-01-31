@@ -61,7 +61,7 @@ export class Comment {
   @ManyToOne(
     () => PointOfInterest,
     (pointOfInterest) => pointOfInterest.comments,
-    { nullable: true }
+    { nullable: true, onDelete: "CASCADE" }
   )
   @Field(() => PointOfInterest, { nullable: true })
   pointOfInterest: PointOfInterest;
