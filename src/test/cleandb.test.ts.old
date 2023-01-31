@@ -1,0 +1,17 @@
+// import { describe, expect, it } from "@jest/globals";
+// import { graphql, GraphQLSchema } from "graphql";
+// import { getUsers } from "./testsUser";
+// import { cleanDb } from "../scripts/cleanDb";
+
+// let schema: GraphQLSchema;
+
+// describe("cleanBD", () => {
+//   it("check if db is empty", async () => {
+//     await cleanDb();
+//     const result = await graphql({
+//       schema,
+//       source: getUsers,
+//     });
+//     expect(result?.data?.Users.length).toEqual(0);
+//   });
+// });
