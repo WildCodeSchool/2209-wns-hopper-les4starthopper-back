@@ -8,10 +8,11 @@ import { buildSchema } from "type-graphql";
 import datasource from "./utils";
 import { CommentResolver } from "./graphql/resolvers/Comments";
 import { PictureResolver } from "./graphql/resolvers/Picture";
+import env from "./env";
 import { authChecker } from "./graphql/auth";
 
-const PORT = process.env.PORT || 4000;
-
+const PORT = env.PORT;
+console.log("🚀 ~ file: index.ts:15 ~ PORT", PORT);
 async function bootstrap() {
   const schema = await buildSchema({
     resolvers: [

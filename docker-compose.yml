@@ -1,6 +1,8 @@
 version: "3"
 services:
   server:
+    env_file:
+      - .env
     # image: cityguide-graphql
     build: .
     ports:

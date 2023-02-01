@@ -93,7 +93,9 @@ export class UserResolver {
   @Mutation(() => User, { nullable: true })
   async updateUser(
     @Arg("id", () => ID) id: number,
-    @Arg("role") role: number
+    // @Arg("role") role: number,
+    // @Arg("updatedByiD") updatedById: number,
+    @Arg("data") data: UserInput
   ): Promise<User | null> {
     const updateUser = await dataSource
       .getRepository(User)
@@ -101,9 +103,10 @@ export class UserResolver {
     if (updateUser === null) {
       return null;
     }
-    if (role != null) {
-      updateUser.role = role;
+    if (data.role != null) {
+      updateUser.role = data.role;
     }
+    updateUser.updatedById = data.updatedById;
     return await dataSource.getRepository(User).save(updateUser);
   }
   ///////// MUTATION DELETE USERS/////////////
