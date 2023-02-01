@@ -15,6 +15,8 @@ import { usersRelations } from "../../utils/relations";
 import { sign, verify as jwtVerify } from "jsonwebtoken";
 import { IContext } from "../auth";
 
+import env from "../../env";
+
 @Resolver()
 export class UserResolver {
   ///////// QUERY FIND ALL USERS /////////////
@@ -55,11 +57,9 @@ export class UserResolver {
         return null;
       }
       if (await verify(user.password, password)) {
-        const token = sign(
-          { userId: user.id },
-          process.env.JWT_SECRET_KEY || "supersecret",
-          { expiresIn: "2h" }
-        );
+        const token = sign({ userId: user.id }, env.JWT_SECRET_KEY, {
+          expiresIn: "2h",
+        });
         return token;
       } else {
         return null;
