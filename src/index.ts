@@ -8,6 +8,7 @@ import { buildSchema } from "type-graphql";
 import datasource from "./utils";
 import { CommentResolver } from "./graphql/resolvers/Comments";
 import { PictureResolver } from "./graphql/resolvers/Picture";
+import { authChecker } from "./graphql/auth";
 
 const PORT = process.env.PORT || 4000;
 
@@ -21,6 +22,7 @@ async function bootstrap() {
       PointOfInterestResolver,
       PictureResolver,
     ],
+    authChecker: authChecker,
   });
   const server = new ApolloServer({
     cors: {
@@ -28,6 +30,18 @@ async function bootstrap() {
       credentials: true,
     },
     schema,
+    context: ({ req }) => {
+      // Get the user token from the headers.
+      const authorization = req.headers.authorization || "";
+
+      if (authorization) {
+        //Bearer ....token
+        const token = authorization.split(" ").pop();
+        console.log(token);
+        return { token };
+      }
+      return { token: null };
+    },
   });
 
   const { url } = await server.listen(PORT);
