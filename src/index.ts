@@ -12,7 +12,6 @@ import env from "./env";
 import { authChecker } from "./graphql/auth";
 
 const PORT = env.PORT;
-console.log("🚀 ~ file: index.ts:15 ~ PORT", PORT);
 async function bootstrap() {
   const schema = await buildSchema({
     resolvers: [
@@ -38,7 +37,6 @@ async function bootstrap() {
       if (authorization) {
         //Bearer ....token
         const token = authorization.split(" ").pop();
-        console.log(token);
         return { token };
       }
       return { token: null };
