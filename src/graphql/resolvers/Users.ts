@@ -1,20 +1,31 @@
-import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
+import {
+  Query,
+  Arg,
+  Resolver,
+  Mutation,
+  ID,
+  Ctx,
+  Authorized,
+} from "type-graphql";
 import { DeleteResult } from "typeorm";
 import { User, UserInput } from "../../Entities/User";
 import dataSource from "../../utils";
-import { hash } from "argon2";
+import { hash, verify } from "argon2";
 import { usersRelations } from "../../utils/relations";
+import { sign, verify as jwtVerify } from "jsonwebtoken";
+import { IContext } from "../auth";
 
 @Resolver()
 export class UserResolver {
   ///////// QUERY FIND ALL USERS /////////////
+  @Authorized()
   @Query(() => [User], { nullable: true })
   async FindAllUsers(): Promise<User[]> {
-    const Users = await dataSource.getRepository(User).find({
+    return await dataSource.getRepository(User).find({
       relations: usersRelations,
     });
-    return Users;
   }
+
   ///////// QUERY FIND ONE USER /////////////
   @Query(() => User, { nullable: true })
   async FindUser(@Arg("id", () => ID) id: number): Promise<User | null> {
@@ -29,6 +40,42 @@ export class UserResolver {
     data.password = await hash(data.password);
     return await dataSource.getRepository(User).save(data);
   }
+
+  ///////////// MUTATION SIGNIN //////////////
+  @Mutation(() => String, { nullable: true })
+  async signin(
+    @Arg("email") email: string,
+    @Arg("password") password: string
+  ): Promise<string | null> {
+    try {
+      const user = await dataSource
+        .getRepository(User)
+        .findOne({ where: { email: email } });
+      if (!user) {
+        return null;
+      }
+      if (await verify(user.password, password)) {
+        const token = sign(
+          { userId: user.id },
+          process.env.JWT_SECRET_KEY || "supersecret",
+          { expiresIn: "2h" }
+        );
+        return token;
+      } else {
+        return null;
+      }
+    } catch {
+      return null;
+    }
+  }
+
+  ///////// QUERY FIND USER CONNECTED /////////////
+  @Authorized()
+  @Query(() => User, { nullable: true })
+  async GetMe(@Ctx() context: IContext): Promise<User | null> {
+    return context.user;
+  }
+
   ///////// MUTATION DELETE USER /////////////
   @Mutation(() => User, { nullable: true })
   async deleteUser(
