@@ -11,6 +11,8 @@ services:
     volumes:
       - ./src:/app/src
   db:
+    ports:
+      - 5071:5432
     image: postgres
     environment:
       POSTGRES_PASSWORD: supersecret
