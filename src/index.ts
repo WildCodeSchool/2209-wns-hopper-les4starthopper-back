@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/image-upload", upload);
 const expressServer = () => {
-  app.listen(3000, () => {
+  app.listen(3001, () => {
     console.log("💻✳️  SERVER STARTED ON PORT 3000✳️ 💻");
   });
 };
