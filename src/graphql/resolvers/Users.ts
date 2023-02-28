@@ -20,7 +20,7 @@ import env from "../../env";
 @Resolver()
 export class UserResolver {
   ///////// QUERY FIND ALL USERS /////////////
-  @Authorized()
+  // @Authorized()
   @Query(() => [User], { nullable: true })
   async FindAllUsers(): Promise<User[]> {
     return await dataSource.getRepository(User).find({
@@ -53,6 +53,7 @@ export class UserResolver {
       const user = await dataSource
         .getRepository(User)
         .findOne({ where: { email: email } });
+      console.log("🚀🚀🚀🚀🚀 ~ file: Users.ts:56 ~ UserResolver ~ user🚀🚀🚀🚀:", user)
       if (!user) {
         return null;
       }
@@ -70,7 +71,7 @@ export class UserResolver {
   }
 
   ///////// QUERY FIND USER CONNECTED /////////////
-  @Authorized()
+  // @Authorized()
   @Query(() => User, { nullable: true })
   async GetMe(@Ctx() context: IContext): Promise<User | null> {
     return context.user;

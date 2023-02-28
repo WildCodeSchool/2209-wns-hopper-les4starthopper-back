@@ -9,6 +9,7 @@ import {
   deleteUsers,
   getUsers,
   updateUser,
+  signin
 } from "../utils/testsUser";
 import { User } from "../Entities/User";
 import { cleanDb } from "../script/cleanDb";
@@ -40,7 +41,8 @@ beforeAll(async () => {
 //     expect(result?.data?.FindAllUsers.length).toEqual(0);
 //   });
 // });
-
+let token;
+let password: string;
 describe("users", () => {
   describe("check user's creation", () => {
     it("creates a new user", async () => {
@@ -55,10 +57,26 @@ describe("users", () => {
           },
         },
       });
+      // console.log("🚀 ~ file: users.test.ts:60 ~ it ~ result:", result?.data?.createUser)
       userId = result?.data?.createUser?.id;
       role = result?.data?.createUser?.role;
+      password = result?.data?.createUser.password
       expect(result?.data?.createUser).toBeTruthy();
     });
+
+    // it("get authentication with login", async () => {
+    //   const result = await graphql({
+    //     schema,
+    //     source: signin,
+    //     variableValues: {
+    //       email: "testuser1@testuser1.com",
+    //       password: "Supers3cret",
+    //     },
+    //   });
+    //   console.log("🚀🚀🚀🚀🚀🚀🚀 ~ file: users.test.ts:76 ~ it ~ result:", result)
+    //   token = result
+    //   expect(result).toBeNull()
+    // })
 
     it("find all users in db", async () => {
       const user = await datasource.getRepository(User).find({});

@@ -3,6 +3,8 @@ export const createUser = `
     createUser(data: $data) {
       id
       role
+      email
+      password
     }
   }
 `;
@@ -39,3 +41,9 @@ export const deleteUsers = `
     }
   }
 `;
+
+export const signin = `
+mutation($password: String!, $email: String!){
+  signin(password: $password, email: $email)
+}
+`
