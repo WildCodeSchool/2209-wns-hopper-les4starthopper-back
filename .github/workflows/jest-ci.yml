@@ -28,5 +28,5 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: "{{defaultContext}}:server"
+          context: "{{defaultContext}}:graphQL"
           tags: ericp84/cityguideserver:latest
