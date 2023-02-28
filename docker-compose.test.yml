@@ -12,7 +12,7 @@ services:
     environment:
       - DB_HOST=db
     # run tests instead of launching api
-    command: npm test ./src/test --watch
+    command: npm test ./src/test
   db:
     image: postgres
     environment:
