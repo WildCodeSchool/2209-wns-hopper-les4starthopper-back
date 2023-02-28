@@ -13,14 +13,14 @@ import dataSource from "../../utils";
 import { hash, verify } from "argon2";
 import { usersRelations } from "../../utils/relations";
 import { sign, verify as jwtVerify } from "jsonwebtoken";
-import { IContext } from "../auth";
+import { authChecker, IContext } from "../auth";
 
 import env from "../../env";
 
 @Resolver()
 export class UserResolver {
   ///////// QUERY FIND ALL USERS /////////////
-  // @Authorized()
+  //@Authorized()
   @Query(() => [User], { nullable: true })
   async FindAllUsers(): Promise<User[]> {
     return await dataSource.getRepository(User).find({
@@ -49,19 +49,24 @@ export class UserResolver {
     @Arg("email") email: string,
     @Arg("password") password: string
   ): Promise<string | null> {
+    console.log("🚀 ~ file: Users.ts:52 ~ UserResolver ~ Promise: ICI",)
+
     try {
+
       const user = await dataSource
         .getRepository(User)
         .findOne({ where: { email: email } });
-      console.log("🚀🚀🚀🚀🚀 ~ file: Users.ts:56 ~ UserResolver ~ user🚀🚀🚀🚀:", user)
+      console.log("🚀 ~ file: Users.ts:56 ~ UserResolver ~ user:", user)
       if (!user) {
+        console.log("🚀 ~ file: Users.ts:52 ~ UserResolver ~ !user: ICI",)
         return null;
       }
       if (await verify(user.password, password)) {
-        const token = sign({ userId: user.id }, env.JWT_SECRET_KEY, {
+        console.log("🚀 ~ file: Users.ts:52 ~ UserResolver ~ user.password verify: ICI", await verify(user.password, password))
+        let token = sign({ userId: user.id }, env.JWT_SECRET_KEY, {
           expiresIn: "2h",
         });
-        return token;
+        return token = "toto";
       } else {
         return null;
       }
@@ -71,7 +76,7 @@ export class UserResolver {
   }
 
   ///////// QUERY FIND USER CONNECTED /////////////
-  // @Authorized()
+  @Authorized()
   @Query(() => User, { nullable: true })
   async GetMe(@Ctx() context: IContext): Promise<User | null> {
     return context.user;

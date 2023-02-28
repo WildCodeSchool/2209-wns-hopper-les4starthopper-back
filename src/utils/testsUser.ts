@@ -47,3 +47,12 @@ mutation($password: String!, $email: String!){
   signin(password: $password, email: $email)
 }
 `
+export const getMe = `
+  query GetMe {
+    GetMe {
+      id
+      email
+      password
+    }
+  }
+`
