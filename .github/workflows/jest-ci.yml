@@ -3,7 +3,7 @@ name: jest-ci
 on: push
 
 jobs:
-  test-front:
+  test-server:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
