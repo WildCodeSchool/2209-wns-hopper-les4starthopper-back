@@ -38,7 +38,6 @@ async function bootstrap() {
       if (authorization) {
         //Bearer ....token
         const token = authorization.split(" ").pop();
-        console.log(token);
         return { token };
       }
       return { token: null };
