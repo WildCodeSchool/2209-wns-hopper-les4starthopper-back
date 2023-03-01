@@ -50,6 +50,7 @@ async function bootstrap() {
     context: ({ req }) => {
       // Get the user token from the headers.
       const authorization = req.headers.authorization || "";
+      console.log("🚀 ~ file: index.ts:37 ~ bootstrap ~ authorization:", authorization)
 
       if (authorization) {
         //Bearer ....token

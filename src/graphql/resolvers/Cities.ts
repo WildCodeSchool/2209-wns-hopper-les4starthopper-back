@@ -1,4 +1,4 @@
-import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
+import { Query, Arg, Resolver, Mutation, ID, Authorized } from "type-graphql";
 import { DeleteResult } from "typeorm";
 import { City, CityInput } from "../../Entities/City";
 import dataSource from "../../utils";
@@ -7,6 +7,7 @@ import { removeAccents } from "../../utils/utils";
 @Resolver()
 export class CityResolver {
   ///////// QUERY FIND ALL CITIES /////////////
+  @Authorized()
   @Query(() => [City], { nullable: true })
   async Cities(): Promise<City[]> {
     const Cities = await dataSource.getRepository(City).find({
@@ -15,6 +16,7 @@ export class CityResolver {
     return Cities;
   }
   ///////// QUERY FIND ONE CITY /////////////
+  @Authorized()
   @Query(() => City, { nullable: true })
   async city(@Arg("id", () => ID) id: number): Promise<City | null> {
     const city = await dataSource
@@ -23,6 +25,7 @@ export class CityResolver {
     return city;
   }
   //////////  QUERY CITY BY NAME //////////
+  @Authorized()
   @Query(() => City, { nullable: true })
   async cityByName(@Arg("name") name: string): Promise<City | null> {
     const lowerCaseName = removeAccents(name.toLowerCase());
@@ -33,6 +36,7 @@ export class CityResolver {
     return city;
   }
   ///////// MUTATION CREATE CITY /////////////
+  @Authorized([1])
   @Mutation(() => City)
   async createCity(@Arg("data") data: CityInput): Promise<City> {
     let datas: CityInput = {
@@ -42,6 +46,7 @@ export class CityResolver {
     return await dataSource.getRepository(City).save(datas);
   }
   ////////// MUTATION UPDATE CITY //////////
+  @Authorized([1])
   @Mutation(() => City, { nullable: true })
   async updateCity(
     @Arg("id", () => ID) id: number,
@@ -60,6 +65,7 @@ export class CityResolver {
     return await dataSource.getRepository(City).save(updateCity);
   }
   ///////// MUTATION DELETE CITY /////////////
+  @Authorized([1])
   @Mutation(() => City, { nullable: true })
   async deleteCity(
     @Arg("id", () => ID) id: number
@@ -73,6 +79,7 @@ export class CityResolver {
       .execute();
   }
   ///////// MUTATION DELETE CITIES/////////////
+  @Authorized([1])
   @Mutation(() => City, { nullable: true })
   async deleteCities(): Promise<DeleteResult | null> {
     return await dataSource

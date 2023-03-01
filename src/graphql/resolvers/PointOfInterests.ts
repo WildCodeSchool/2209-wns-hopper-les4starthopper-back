@@ -1,4 +1,4 @@
-import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
+import { Query, Arg, Resolver, Mutation, ID, Authorized } from "type-graphql";
 import { DeleteResult } from "typeorm";
 import { Category } from "../../Entities/Category";
 import {
@@ -11,6 +11,7 @@ import { pointOfInterestRelations } from "../../utils/relations";
 @Resolver()
 export class PointOfInterestResolver {
   ///////// QUERY FIND ALL PointOfinterests /////////////
+  @Authorized()
   @Query(() => [PointOfInterest], { nullable: true })
   async PointOfinterests(): Promise<PointOfInterest[]> {
     const PointOfinterests = await dataSource
@@ -21,6 +22,7 @@ export class PointOfInterestResolver {
     return PointOfinterests;
   }
   ///////// QUERY FIND ONE PointOfInterest /////////////
+  @Authorized()
   @Query(() => PointOfInterest, { nullable: true })
   async pointOfInterest(
     @Arg("id", () => ID) id: number
@@ -31,6 +33,7 @@ export class PointOfInterestResolver {
     return pointOfInterest;
   }
   ///////// MUTATION CREATE POINT OF INTEREST /////////////
+  @Authorized([1])
   @Mutation(() => PointOfInterest)
   async createPointOfInterest(
     @Arg("data") data: PointOfInterestInput,
@@ -43,6 +46,7 @@ export class PointOfInterestResolver {
     return await dataSource.getRepository(PointOfInterest).save(datas);
   }
   ///////// MUTATION DELETE POINT IF INTEREST /////////////
+  @Authorized([1])
   @Mutation(() => PointOfInterest, { nullable: true })
   async deletePointOfInterest(
     @Arg("id", () => ID) id: number
@@ -56,6 +60,7 @@ export class PointOfInterestResolver {
       .execute();
   }
   ///////// MUTATION UPDATE POINT OF INTEREST/////////////
+  @Authorized([1])
   @Mutation(() => PointOfInterest, { nullable: true })
   async updatePointOfInterest(
     @Arg("id", () => ID) id: number,
@@ -77,6 +82,7 @@ export class PointOfInterestResolver {
   }
 
   ///////// MUTATION DELETE POINT OF INTEREST/////////////
+  @Authorized([1])
   @Mutation(() => PointOfInterest, { nullable: true })
   async deletePointOfinterests(): Promise<DeleteResult | null> {
     return await dataSource
