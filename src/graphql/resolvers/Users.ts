@@ -66,7 +66,7 @@ export class UserResolver {
         let token = sign({ userId: user.id }, env.JWT_SECRET_KEY, {
           expiresIn: "2h",
         });
-        return token = "toto";
+        return token;
       } else {
         return null;
       }
