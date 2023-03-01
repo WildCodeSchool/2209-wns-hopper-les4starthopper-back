@@ -27,6 +27,7 @@ import { PictureResolver } from "../graphql/resolvers/Picture";
 let schema: GraphQLSchema;
 let userId: number;
 let role: number;
+let userToken: string;
 
 beforeAll(async () => {
   await datasource.initialize();
@@ -36,7 +37,7 @@ beforeAll(async () => {
     authChecker,
   });
 
-  // const schemas = await buildSchema({
+  // const schema = await buildSchema({
   //   resolvers: [
   //     UserResolver,
   //   ],
@@ -51,7 +52,7 @@ beforeAll(async () => {
     schema,
     context: ({ req }) => {
       // Get the user token from the headers.
-      const authorization = req.headers.authorization || "";
+      const authorization = req.headers.authorization || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU4MiwidXNlclJvbGUiOjEsImlhdCI6MTY3NzY2NTkxNSwiZXhwIjoxNjc3NjczMTE1fQ.mauFhFY4M7OejLI860zifSR-tjiZQuWMiulueo7U-hc";
 
       if (authorization) {
         //Bearer ....token
@@ -113,7 +114,7 @@ beforeAll(async () => {
 let password
 describe("users", () => {
   describe("check user's creation", () => {
-    it.skip("creates a new user", async () => {
+    it("creates a new user", async () => {
       const result = await graphql({
         schema,
         source: createUser,
@@ -138,63 +139,36 @@ describe("users", () => {
         variableValues: {
           email: "testuser1@testuser1.com",
           password: "Supers3cret",
-          //role: 1
+          role: 1
         }
       })
-      //console.log("🚀 ~ file: users.test.ts:157 ~ it ~ result:", result)
-      let password = "Supers3cret"
-      let userToken
-      const user = await datasource
-        .getRepository(User)
-        .findOne({ where: { email: "testuser1@testuser1.com" } });
-      console.log("🚀 ~ file: users.test.ts:163 ~ it ~ user:", user)
-      if (!user) {
-        return null;
-      }
-      if (await verify(user.password, password)) {
-        const token = sign({ userId: user.id, userRole: user.role }, "supersecret", {
-          expiresIn: "2h",
-        });
-        userToken = token
-        console.log("🚀 ~ file: users.test.ts:171 ~ it ~ token:", token)
-      }
-      expect(userToken).toBeDefined()
-      // let password = "Supers3cret"
-      // const user = await datasource
-      //   .getRepository(User)
-      //   .findOne({ where: { email: "testuser1@testuser1.com" } });
-      // if (await verify(user!.password, password)) {
-      //   const token = sign({ userId: user!.id }, "supersecret", {
-      //     expiresIn: "2h",
-      //   });
-      //   let userToken = token;
-      //   return token;
-      // }
-      // expect(userToken).toBeDefined()
+      userToken = result?.data?.signin
+      expect(result?.data?.signin).toBeDefined()
     })
 
-    it.skip("return me", async () => {
-      const result = await graphql({
-        schema,
-        source: getMe,
-      })
-    })
+    // it("return me", async () => {
+    //   const result = await graphql({
+    //     schema,
+    //     source: getMe,
+    //   })
+    //   console.log("🚀 ~ file: users.test.ts:183 ~ it ~ result:", result)
+    // })
 
 
-    it.skip("find all users in db", async () => {
+    it("find all users in db", async () => {
       const user = await datasource.getRepository(User).find({});
       expect(Array.isArray(user)).toBeTruthy();
     });
 
-    it.skip("find user in db", async () => {
+    it("find user in db", async () => {
       const user = await datasource
         .getRepository(User)
-        .findOneBy({ email: "testuser@testuser.com" });
+        .findOneBy({ email: "testuser1@testuser1.com" });
       expect(user?.password).toEqual(user?.password);
       expect(user).toBeDefined();
     });
 
-    it.skip("cannot create 2 users with the same email", async () => {
+    it("cannot create 2 users with the same email", async () => {
       const result = await graphql({
         schema,
         source: createUser,
@@ -209,7 +183,7 @@ describe("users", () => {
       expect(result.errors).toHaveLength(1);
     });
 
-    it.skip("check if the user is correctly updated", async () => {
+    it("check if the user is correctly updated", async () => {
       const result = await graphql({
         schema,
         source: updateUser,
@@ -221,23 +195,30 @@ describe("users", () => {
       expect(result.data?.updateUser?.role !== role);
     });
 
-    it.skip("check if the user is correctly deleted from DB", async () => {
+    it("check if the user is correctly deleted from DB", async () => {
       const result = await graphql({
         schema,
         source: deleteUser,
         variableValues: {
-          userId: userId,
+          userId,
         },
       });
       expect(result.data?.deleteUser?.id).toBeNull();
     });
 
-    it.skip("check if all users are correctly deleted from DB", async () => {
+    it("check if all users are correctly deleted from DB", async () => {
+      let expected;
+      const users = await datasource.getRepository(User).find({});
+      users === null ? expected = `toBeUndefined()` : `toBeNull()`
+
       const result = await graphql({
         schema,
         source: deleteUsers,
+        contextValue: {
+          token: userToken
+        }
       });
-      expect(result.data?.deleteUsers.id).toBeNull();
+      expect(result.data?.deleteUsers.id) + `.${expected}`;
     });
   });
 });

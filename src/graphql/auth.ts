@@ -11,14 +11,9 @@ export const authChecker: AuthChecker<IContext, number> = async (
   { root, args, context, info },
   roles // 1 = ADMIN 2 = USER LAMBDA
 ) => {
-  console.log("🚀 ~ file: auth.ts:14 ~ context:", context)
-
   roles = roles.length === 0 ? [1, 2] : roles;
-
-
   const token = context.token;
-
-
+  console.log("🚀 ~ file: auth.ts:16 ~ tokenizer:", token)
   if (!token) {
     return false;
   }
@@ -28,21 +23,20 @@ export const authChecker: AuthChecker<IContext, number> = async (
       process.env.JWT_SECRET_KEY || "supersecret"
     ) as any;
 
+    console.log("🚀 ~ file: auth.ts:22 ~ decodedToken:", decodedToken)
     const userId = decodedToken.userId;
     const userRole = decodedToken.userRole;
 
-
     const user = await datasource
       .getRepository(User)
-      .findOne({ where: { id: userId, role: userRole } });
+      .findOneBy({ id: userId });
+    console.log("🚀 ~ file: auth.ts:34 ~ user:", user)
     if (!user) {
       return false;
     }
 
     if (roles.includes(user.role)) {
       context.user = user;
-      console.log("🚀 ~ file: auth.ts:45 ~ context.user:", context.user)
-
       return true;
     } else {
       return false;

@@ -58,7 +58,8 @@ export class UserResolver {
         return null;
       }
       if (await verify(user.password, password)) {
-        const token = sign({ userId: user.id, userRole: user.role }, env.JWT_SECRET_KEY, {
+
+        const token = sign({ userId: user.id, userRole: user.role }, 'supersecret', {
           expiresIn: "2h",
         });
         return token;
@@ -71,12 +72,11 @@ export class UserResolver {
   }
 
   ///////// QUERY FIND USER CONNECTED /////////////
-  @Authorized([1])
+  @Authorized()
   @Query(() => User, { nullable: true })
   async GetMe(@Ctx() context: IContext): Promise<User | null> {
-    const mc = context.user
-    console.log("🚀 ~ file: Users.ts:78 ~ UserResolver ~ GetMe ~ mc :", mc)
-    return mc;
+    console.log("🌳 getme == inside");
+    return context.user;
   }
 
   ///////// MUTATION DELETE USER /////////////
@@ -115,7 +115,7 @@ export class UserResolver {
     return await dataSource.getRepository(User).save(updateUser);
   }
   ///////// MUTATION DELETE USERS/////////////
-  // @Authorized([1])
+  @Authorized([1])
   @Mutation(() => User)
   async deleteUsers(): Promise<DeleteResult | null> {
     return await dataSource
