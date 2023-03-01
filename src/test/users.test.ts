@@ -146,13 +146,16 @@ describe("users", () => {
       expect(result?.data?.signin).toBeDefined()
     })
 
-    // it("return me", async () => {
-    //   const result = await graphql({
-    //     schema,
-    //     source: getMe,
-    //   })
-    //   console.log("🚀 ~ file: users.test.ts:183 ~ it ~ result:", result)
-    // })
+    it("return me", async () => {
+      const result = await graphql({
+        schema,
+        source: getMe,
+        contextValue: {
+          token: userToken
+        }
+      })
+      expect(result?.data?.GetMe).toBeDefined();
+    })
 
 
     it("find all users in db", async () => {
