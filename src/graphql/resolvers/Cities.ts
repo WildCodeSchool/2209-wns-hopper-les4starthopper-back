@@ -3,7 +3,7 @@ import { DeleteResult } from "typeorm";
 import { City, CityInput } from "../../Entities/City";
 import dataSource from "../../utils";
 import { citiesRelation } from "../../utils/relations";
-
+import { removeAccents } from "../../utils/utils";
 @Resolver()
 export class CityResolver {
   ///////// QUERY FIND ALL CITIES /////////////
@@ -25,7 +25,7 @@ export class CityResolver {
   //////////  QUERY CITY BY NAME //////////
   @Query(() => City, { nullable: true })
   async cityByName(@Arg("name") name: string): Promise<City | null> {
-    const lowerCaseName = name.toLowerCase();
+    const lowerCaseName = removeAccents(name.toLowerCase());
     const city = await dataSource.getRepository(City).findOne({
       where: { name: lowerCaseName },
       relations: citiesRelation,
@@ -37,7 +37,7 @@ export class CityResolver {
   async createCity(@Arg("data") data: CityInput): Promise<City> {
     let datas: CityInput = {
       ...data,
-      name: data.name.toLowerCase(),
+      name: removeAccents(data.name.toLowerCase()),
     };
     return await dataSource.getRepository(City).save(datas);
   }
@@ -54,7 +54,7 @@ export class CityResolver {
       return null;
     }
     if (data.name != null) {
-      updateCity.name = data.name;
+      updateCity.name = removeAccents(data.name.toLowerCase());
     }
     updateCity.updatedById = data.updatedById;
     return await dataSource.getRepository(City).save(updateCity);
