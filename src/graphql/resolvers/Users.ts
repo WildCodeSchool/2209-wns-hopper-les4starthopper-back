@@ -29,7 +29,7 @@ export class UserResolver {
   }
 
   ///////// QUERY FIND ONE USER /////////////
-  @Authorized([1])
+  //@Authorized([1])
   @Query(() => User, { nullable: true })
   async FindUser(@Arg("id", () => ID) id: number): Promise<User | null> {
     const user = await dataSource
@@ -53,20 +53,14 @@ export class UserResolver {
     try {
       const user = await dataSource
         .getRepository(User)
-        .findOne({ where: { email: email } });
+        .findOne({ where: { email } });
       if (!user) {
         return null;
       }
-      console.log(user);
-
       if (await verify(user.password, password)) {
-        console.log("TRUE", await verify(user.password, password));
-
-        const token = sign({ userId: user.id }, env.JWT_SECRET_KEY, {
+        const token = sign({ userId: user.id, userRole: user.role }, env.JWT_SECRET_KEY, {
           expiresIn: "2h",
         });
-        console.log(token);
-
         return token;
       } else {
         return null;
@@ -77,14 +71,16 @@ export class UserResolver {
   }
 
   ///////// QUERY FIND USER CONNECTED /////////////
-  @Authorized()
+  @Authorized([1])
   @Query(() => User, { nullable: true })
   async GetMe(@Ctx() context: IContext): Promise<User | null> {
-    return context.user;
+    const mc = context.user
+    console.log("🚀 ~ file: Users.ts:78 ~ UserResolver ~ GetMe ~ mc :", mc)
+    return mc;
   }
 
   ///////// MUTATION DELETE USER /////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => User, { nullable: true })
   async deleteUser(
     @Arg("id", () => ID) id: number
@@ -98,7 +94,7 @@ export class UserResolver {
       .execute();
   }
   ///////// MUTATION UPDATE USERS/////////////
-  @Authorized()
+  // @Authorized()
   @Mutation(() => User, { nullable: true })
   async updateUser(
     @Arg("id", () => ID) id: number,
@@ -119,7 +115,7 @@ export class UserResolver {
     return await dataSource.getRepository(User).save(updateUser);
   }
   ///////// MUTATION DELETE USERS/////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => User)
   async deleteUsers(): Promise<DeleteResult | null> {
     return await dataSource
