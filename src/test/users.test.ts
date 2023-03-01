@@ -190,6 +190,9 @@ describe("users", () => {
       const result = await graphql({
         schema,
         source: updateUser,
+        contextValue: {
+          token: userToken
+        },
         variableValues: {
           userId: userId,
           role: 4,
@@ -202,6 +205,9 @@ describe("users", () => {
       const result = await graphql({
         schema,
         source: deleteUser,
+        contextValue: {
+          token: userToken
+        },
         variableValues: {
           userId,
         },
