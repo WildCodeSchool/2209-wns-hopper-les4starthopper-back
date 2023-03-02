@@ -20,7 +20,7 @@ import env from "../../env";
 @Resolver()
 export class UserResolver {
   ///////// QUERY FIND ALL USERS /////////////
-  @Authorized()
+  @Authorized([1])
   @Query(() => [User], { nullable: true })
   async FindAllUsers(): Promise<User[]> {
     return await dataSource.getRepository(User).find({
@@ -29,6 +29,7 @@ export class UserResolver {
   }
 
   ///////// QUERY FIND ONE USER /////////////
+  @Authorized([1])
   @Query(() => User, { nullable: true })
   async FindUser(@Arg("id", () => ID) id: number): Promise<User | null> {
     const user = await dataSource
@@ -54,12 +55,13 @@ export class UserResolver {
 
       const user = await dataSource
         .getRepository(User)
-        .findOne({ where: { email: email } });
+        .findOne({ where: { email } });
       if (!user) {
         return null;
       }
       if (await verify(user.password, password)) {
-        let token = sign({ userId: user.id }, env.JWT_SECRET_KEY, {
+
+        const token = sign({ userId: user.id, userRole: user.role }, 'supersecret', {
           expiresIn: "2h",
         });
         return token;
@@ -79,6 +81,7 @@ export class UserResolver {
   }
 
   ///////// MUTATION DELETE USER /////////////
+  @Authorized([1])
   @Mutation(() => User, { nullable: true })
   async deleteUser(
     @Arg("id", () => ID) id: number
@@ -92,6 +95,7 @@ export class UserResolver {
       .execute();
   }
   ///////// MUTATION UPDATE USERS/////////////
+  @Authorized()
   @Mutation(() => User, { nullable: true })
   async updateUser(
     @Arg("id", () => ID) id: number,
@@ -112,6 +116,7 @@ export class UserResolver {
     return await dataSource.getRepository(User).save(updateUser);
   }
   ///////// MUTATION DELETE USERS/////////////
+  @Authorized([1])
   @Mutation(() => User)
   async deleteUsers(): Promise<DeleteResult | null> {
     return await dataSource
