@@ -20,7 +20,7 @@ import env from "../../env";
 @Resolver()
 export class UserResolver {
   ///////// QUERY FIND ALL USERS /////////////
-  //@Authorized()
+  @Authorized()
   @Query(() => [User], { nullable: true })
   async FindAllUsers(): Promise<User[]> {
     return await dataSource.getRepository(User).find({
