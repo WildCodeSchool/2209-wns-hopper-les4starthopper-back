@@ -37,13 +37,6 @@ beforeAll(async () => {
     authChecker,
   });
 
-  // const schema = await buildSchema({
-  //   resolvers: [
-  //     UserResolver,
-  //   ],
-  //   authChecker,
-  // });
-
   new ApolloServer({
     cors: {
       origin: "*",
@@ -52,7 +45,7 @@ beforeAll(async () => {
     schema,
     context: ({ req }) => {
       // Get the user token from the headers.
-      const authorization = req.headers.authorization || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU4MiwidXNlclJvbGUiOjEsImlhdCI6MTY3NzY2NTkxNSwiZXhwIjoxNjc3NjczMTE1fQ.mauFhFY4M7OejLI860zifSR-tjiZQuWMiulueo7U-hc";
+      const authorization = req.headers.authorization;
 
       if (authorization) {
         //Bearer ....token
@@ -62,55 +55,8 @@ beforeAll(async () => {
       return { token: null };
     },
   });
-  // async function bootstrap() {
-  //   const schema = await buildSchema({
-  //     resolvers: [
-  //       UserResolver,
-  //     ],
-  //     authChecker,
-  //   });
-  //   const server = new ApolloServer({
-  //     cors: {
-  //       origin: "*",
-  //       credentials: true,
-  //     },
-  //     schema,
-  // context: ({ req }) => {
-  //   // Get the user token from the headers.
-  //   const authorization = req.headers.authorization || "";
-
-  //   if (authorization) {
-  //     //Bearer ....token
-  //     const token = authorization.split(" ").pop();
-  //     return { token };
-  //   }
-  //   return { token: null };
-  // },
-  // });
-
-  //   const { url } = await server.listen(4000);
-  //   console.log(`Server is running, GraphQL Playground available at ${url}`);
-  //   await datasource.initialize();
-  //   console.log("connected to BDD !!!!");
-  // }
-  // bootstrap();
 });
 
-// afterAll(async () => {
-//   // clean db after tests
-//   await cleanDb();
-// });
-
-// describe("cleanBD", () => {
-//   it("check if db is empty", async () => {
-//     await cleanDb();
-//     const result = await graphql({
-//       schema,
-//       source: getUsers,
-//     });
-//     expect(result?.data?.FindAllUsers.length).toEqual(0);
-//   });
-// });
 let password
 describe("users", () => {
   describe("check user's creation", () => {
@@ -216,7 +162,7 @@ describe("users", () => {
     });
 
     it("check if all users are correctly deleted from DB", async () => {
-      let expected;
+      let expected: string = '';
       const users = await datasource.getRepository(User).find({});
       users === null ? expected = `toBeUndefined()` : `toBeNull()`
 

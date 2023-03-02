@@ -75,7 +75,6 @@ export class UserResolver {
   @Authorized()
   @Query(() => User, { nullable: true })
   async GetMe(@Ctx() context: IContext): Promise<User | null> {
-    console.log("🌳 getme == inside");
     return context.user;
   }
 
