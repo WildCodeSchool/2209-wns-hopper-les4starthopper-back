@@ -12,42 +12,71 @@ import {
   updatePointOfInterest,
 } from "../utils/testPointOfInterest";
 import { PointOfInterest } from "../Entities/PointOfInterest";
+import { createUser, signin } from "../utils/testsUser";
+import { UserResolver } from "../graphql/resolvers/Users";
+import { authChecker } from "../graphql/auth";
+
 
 let schema: GraphQLSchema;
 let poiId: number;
 let description: string;
+let userId: number;
+let role: number;
+let userToken: string;
+let password: string;
+
 
 beforeAll(async () => {
   // connect to DB
   await datasource.initialize();
   // compute GraphQL schema
   schema = await buildSchema({
-    resolvers: [PointOfInterestResolver],
+    resolvers: [PointOfInterestResolver, UserResolver],
+    authChecker
   });
 });
 
-// afterAll(async () => {
-//   // clean db after tests
-//   await cleanDb();
-// });
-
-// describe("cleanBD", () => {
-//   it("check if db is empty", async () => {
-//     await cleanDb();
-//     const result = await graphql({
-//       schema,
-//       source: getUsers,
-//     });
-//     expect(result?.data?.Users.length).toEqual(0);
-//   });
-// });
-
 describe("point of interests", () => {
   describe("check POI creation", () => {
+    it.skip("creates a new user", async () => {
+      const result = await graphql({
+        schema,
+        source: createUser,
+        variableValues: {
+          data: {
+            email: "testuser1@testuser1.com",
+            password: "Supers3cret",
+            role: 1,
+          },
+        },
+      });
+      userId = result?.data?.createUser?.id;
+      role = result?.data?.createUser?.role;
+      password = result?.data?.createUser?.password;
+      expect(result?.data?.createUser).toBeTruthy();
+    });
+
+    it("signin", async () => {
+      const result = await graphql({
+        schema,
+        source: signin,
+        variableValues: {
+          email: "testuser1@testuser1.com",
+          password: "Supers3cret",
+          role: 1
+        }
+      })
+      userToken = result?.data?.signin
+      expect(result?.data?.signin).toBeDefined()
+    });
+
     it("creates a new POI", async () => {
       const result = await graphql({
         schema,
         source: createPointOfInterest,
+        contextValue: {
+          token: userToken
+        },
         variableValues: {
           data: {
             name: "test city name xxx",
@@ -72,6 +101,9 @@ describe("point of interests", () => {
       const result = await graphql({
         schema,
         source: updatePointOfInterest,
+        contextValue: {
+          token: userToken
+        },
         variableValues: {
           poiId: 5,
           description: "test UPDATE DESCRIPTION",
@@ -84,6 +116,9 @@ describe("point of interests", () => {
       const result = await graphql({
         schema,
         source: deletePointOfInterest,
+        contextValue: {
+          token: userToken
+        },
         variableValues: {
           poiId: poiId,
         },
@@ -95,6 +130,9 @@ describe("point of interests", () => {
       const result = await graphql({
         schema,
         source: deletePointOfinterests,
+        contextValue: {
+          token: userToken
+        },
       });
       expect(result.data?.deletePointOfinterests?.id).toBeNull();
     });

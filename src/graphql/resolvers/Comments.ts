@@ -1,4 +1,4 @@
-import { Query, Arg, Resolver, Mutation, ID } from "type-graphql";
+import { Query, Arg, Resolver, Mutation, ID, Authorized } from "type-graphql";
 import { DeleteResult } from "typeorm";
 import { Comment, CommentInput } from "../../Entities/Comment";
 import dataSource from "../../utils";
@@ -7,6 +7,7 @@ import { commentsRelations } from "../../utils/relations";
 @Resolver()
 export class CommentResolver {
   ///////// QUERY FIND ALL COMMENTS /////////////
+  @Authorized()
   @Query(() => [Comment], { nullable: true })
   async Comments(): Promise<Comment[]> {
     const Comments = await dataSource.getRepository(Comment).find({
@@ -24,12 +25,14 @@ export class CommentResolver {
     return comment;
   }
   ///////// MUTATION CREATE COMMENT /////////////
+  @Authorized()
   @Mutation(() => Comment)
   async createComment(@Arg("data") data: CommentInput): Promise<Comment> {
     return await dataSource.getRepository(Comment).save(data);
   }
 
   ///////// MUTATION UPDATE COMMENT /////////////
+  @Authorized()
   @Mutation(() => Comment, { nullable: true })
   async updateComment(
     @Arg("id", () => ID) id: number,
@@ -50,6 +53,7 @@ export class CommentResolver {
   }
 
   ///////// MUTATION DELETE COMMENT /////////////
+  @Authorized()
   @Mutation(() => Comment, { nullable: true })
   async deleteComment(
     @Arg("id", () => ID) id: number
@@ -63,6 +67,7 @@ export class CommentResolver {
       .execute();
   }
   ///////// MUTATION DELETE COMMENTS /////////////
+  @Authorized([1])
   @Mutation(() => Comment, { nullable: true })
   async deleteComments(): Promise<DeleteResult | null> {
     return await dataSource

@@ -43,16 +43,20 @@ export const deleteUsers = `
 `;
 
 export const signin = `
-mutation($password: String!, $email: String!){
-  signin(password: $password, email: $email)
-}
-`
-export const getMe = `
-  query GetMe {
-    GetMe {
-      id
-      email
-      password
-    }
+  mutation($password: String!, $email: String!){
+    signin(password: $password, email: $email)
   }
+`
+
+export const getMe = `
+query {
+  GetMe {
+    created_at
+    email
+    password
+    id
+    role
+  }
+}
+
 `

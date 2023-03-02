@@ -7,30 +7,37 @@ export interface IContext {
   token: string | null;
   user: User;
 }
-export const authChecker: AuthChecker<IContext> = async (
+export const authChecker: AuthChecker<IContext, number> = async (
   { root, args, context, info },
-  roles
+  roles // 1 = ADMIN 2 = USER LAMBDA
 ) => {
+  roles = roles.length === 0 ? [1, 2] : roles;
   const token = context.token;
-  console.log("🚀 ~ file: auth.ts:15 ~ token:", token)
   if (!token) {
     return false;
   }
   try {
-    const decodedToken: { userId: number } = verify(
+    const decodedToken: { userId: number; userRole: number } = verify(
       token,
       process.env.JWT_SECRET_KEY || "supersecret"
     ) as any;
+
     const userId = decodedToken.userId;
+    const userRole = decodedToken.userRole;
 
     const user = await datasource
       .getRepository(User)
-      .findOne({ where: { id: userId } });
+      .findOneBy({ id: userId });
     if (!user) {
       return false;
     }
-    context.user = user;
-    return true;
+
+    if (roles.includes(user.role)) {
+      context.user = user;
+      return true;
+    } else {
+      return false;
+    }
   } catch {
     return false;
   }
