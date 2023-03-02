@@ -12,6 +12,7 @@ export const authChecker: AuthChecker<IContext> = async (
   roles
 ) => {
   const token = context.token;
+  console.log("🚀 ~ file: auth.ts:15 ~ token:", token)
   if (!token) {
     return false;
   }
