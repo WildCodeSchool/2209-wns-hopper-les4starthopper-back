@@ -3,6 +3,8 @@ export const createUser = `
     createUser(data: $data) {
       id
       role
+      email
+      password
     }
   }
 `;

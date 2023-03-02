@@ -13,7 +13,7 @@ import dataSource from "../../utils";
 import { hash, verify } from "argon2";
 import { usersRelations } from "../../utils/relations";
 import { sign, verify as jwtVerify } from "jsonwebtoken";
-import { IContext } from "../auth";
+import { authChecker, IContext } from "../auth";
 
 import env from "../../env";
 
@@ -50,7 +50,9 @@ export class UserResolver {
     @Arg("email") email: string,
     @Arg("password") password: string
   ): Promise<string | null> {
+
     try {
+
       const user = await dataSource
         .getRepository(User)
         .findOne({ where: { email } });

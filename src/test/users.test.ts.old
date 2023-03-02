@@ -11,6 +11,8 @@ import {
   getUsers,
   signin,
   updateUser,
+  signin,
+  getMe
 } from "../utils/testsUser";
 import { User } from "../Entities/User";
 import { cleanDb } from "../script/cleanDb";

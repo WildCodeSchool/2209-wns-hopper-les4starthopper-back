@@ -13,6 +13,7 @@ export const authChecker: AuthChecker<IContext, number> = async (
 ) => {
   roles = roles.length === 0 ? [1, 2] : roles;
   const token = context.token;
+  console.log("🚀 ~ file: auth.ts:15 ~ token:", token)
   if (!token) {
     return false;
   }
