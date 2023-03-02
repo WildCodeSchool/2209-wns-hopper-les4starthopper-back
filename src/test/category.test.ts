@@ -1,12 +1,10 @@
-import { afterAll, beforeAll, describe, expect, it } from "@jest/globals";
+import { beforeAll, describe, expect, it } from "@jest/globals";
 import { graphql, GraphQLSchema } from "graphql";
 import { buildSchema } from "type-graphql";
 import { CategoryResolver } from "../graphql/resolvers/Categories";
 import { UserResolver } from "../graphql/resolvers/Users";
 import datasource from "../utils";
 import {
-  Categories,
-  getCategory,
   createCategory,
   deleteCategories,
   deleteCategory,
@@ -23,8 +21,6 @@ import {
   createCity,
   deleteCities,
   deleteCity,
-  getCities,
-  getCity,
   updateCity,
 } from "../utils/testCity";
 import { City } from "../Entities/City";
@@ -41,7 +37,6 @@ import { Comment } from "../Entities/Comment";
 
 import { PointOfInterestResolver } from "../graphql/resolvers/PointOfInterests";
 import {
-  PointOfinterests,
   createPointOfInterest,
   deletePointOfInterest,
   deletePointOfinterests,
@@ -52,17 +47,8 @@ import { PointOfInterest } from "../Entities/PointOfInterest";
 import {
   deleteUser,
   getMe,
-  getUsers,
   updateUser,
 } from "../utils/testsUser";
-import { verify } from "argon2";
-import { sign } from "jsonwebtoken";
-import env from "../env";
-import { ApolloServer } from "apollo-server";
-import { PictureResolver } from "../graphql/resolvers/Picture";
-
-
-
 
 let schema: GraphQLSchema;
 let categoryId: number;
@@ -89,9 +75,9 @@ beforeAll(async () => {
   });
 });
 
-describe("category", () => {
-  describe("check category creation", () => {
-    it("creates a new user", async () => {
+describe("▶️ category", () => {
+  describe("🔎 check category resolver", () => {
+    it("🔸 creates a new user", async () => {
       const result = await graphql({
         schema,
         source: createUser,
@@ -109,7 +95,7 @@ describe("category", () => {
       expect(result?.data?.createUser).toBeTruthy();
     });
 
-    it("signin", async () => {
+    it("🔸 signin", async () => {
       const result = await graphql({
         schema,
         source: signin,
@@ -123,7 +109,7 @@ describe("category", () => {
       expect(result?.data?.signin).toBeDefined()
     });
 
-    it("creates a new category", async () => {
+    it("🔸 creates a new category", async () => {
       const result = await graphql({
         schema,
         source: createCategory,
@@ -143,12 +129,12 @@ describe("category", () => {
       expect(result?.data?.createCategory).toBeTruthy();
     });
 
-    it("find all categories in db", async () => {
+    it("🔸 find all categories in db", async () => {
       const categories = await datasource.getRepository(Category).find({});
       expect(Array.isArray(categories)).toBeTruthy();
     });
 
-    it("check if the category is correctly updated", async () => {
+    it("🔸 check if the category is correctly updated", async () => {
       const result = await graphql({
         schema,
         source: updateCategory,
@@ -167,7 +153,7 @@ describe("category", () => {
       );
     });
 
-    it("check if the selected category is correctly deleted from DB", async () => {
+    it("🔸 check if the selected category is correctly deleted from DB", async () => {
       const result = await graphql({
         schema,
         source: deleteCategory,
@@ -181,7 +167,7 @@ describe("category", () => {
       expect(result.data?.deleteCategory?.id).toBeNull();
     });
 
-    it("check if all categories are correctly deleted from DB", async () => {
+    it("🔸 check if all categories are correctly deleted from DB", async () => {
       const result = await graphql({
         schema,
         source: deleteCategories,
@@ -194,9 +180,9 @@ describe("category", () => {
   });
 });
 
-describe("cities", () => {
-  describe("check cities creation", () => {
-    it("creates a new city", async () => {
+describe("▶️ cities", () => {
+  describe("🔎 check cities creation", () => {
+    it("🔸 creates a new city", async () => {
       const result = await graphql({
         schema,
         source: createCity,
@@ -214,12 +200,12 @@ describe("cities", () => {
       expect(result?.data?.createCity).toBeTruthy();
     });
 
-    it("find all cities in db", async () => {
+    it("🔸 find all cities in db", async () => {
       const cities = await datasource.getRepository(City).find({});
       expect(Array.isArray(cities)).toBeTruthy();
     });
 
-    it("check if the city is correctly updated", async () => {
+    it("🔸 check if the city is correctly updated", async () => {
       const result = await graphql({
         schema,
         source: updateCity,
@@ -234,7 +220,7 @@ describe("cities", () => {
       expect(result.data?.updateComment?.name !== name);
     });
 
-    it("check if the selected city is correctly deleted from DB", async () => {
+    it("🔸 check if the selected city is correctly deleted from DB", async () => {
       const result = await graphql({
         schema,
         source: deleteCity,
@@ -248,7 +234,7 @@ describe("cities", () => {
       expect(result.data?.deleteCity?.id).toBeNull();
     });
 
-    it("check if all cities are correctly deleted from DB", async () => {
+    it("🔸 check if all cities are correctly deleted from DB", async () => {
       const result = await graphql({
         schema,
         source: deleteCities,
@@ -261,10 +247,10 @@ describe("cities", () => {
   });
 });
 
-describe("comments", () => {
-  describe("check comments creation", () => {
+describe("▶️ comments", () => {
+  describe("🔎 check comments creation", () => {
 
-    it("creates a new comment", async () => {
+    it("🔸 creates a new comment", async () => {
       const result = await graphql({
         schema,
         source: createComment,
@@ -284,12 +270,12 @@ describe("comments", () => {
       expect(result?.data?.createComment).toBeTruthy();
     });
 
-    it("find all comments in db", async () => {
+    it("🔸 find all comments in db", async () => {
       const comments = await datasource.getRepository(Comment).find({});
       expect(Array.isArray(comments)).toBeTruthy();
     });
 
-    it("check if the comment is correctly updated", async () => {
+    it("🔸 check if the comment is correctly updated", async () => {
       const result = await graphql({
         schema,
         source: updateComment,
@@ -305,7 +291,7 @@ describe("comments", () => {
       expect(result.data?.updateComment?.comment !== comment);
     });
 
-    it("check if the selected comment is correctly deleted from DB", async () => {
+    it("🔸 check if the selected comment is correctly deleted from DB", async () => {
       const result = await graphql({
         schema,
         source: deleteComment,
@@ -319,7 +305,7 @@ describe("comments", () => {
       expect(result.data?.deleteComment?.id).toBeNull();
     });
 
-    it("check if all comments are correctly deleted from DB", async () => {
+    it("🔸 check if all comments are correctly deleted from DB", async () => {
       const result = await graphql({
         schema,
         source: deleteComments,
@@ -332,9 +318,9 @@ describe("comments", () => {
   });
 });
 
-describe("point of interests", () => {
-  describe("check POI creation", () => {
-    it("creates a new POI", async () => {
+describe("▶️ point of interests", () => {
+  describe("🔎 check POI creation", () => {
+    it("🔸 creates a new POI", async () => {
       const result = await graphql({
         schema,
         source: createPointOfInterest,
@@ -354,14 +340,14 @@ describe("point of interests", () => {
       expect(result?.data?.createPointOfInterest).toBeTruthy();
     });
 
-    it("find all POI in db", async () => {
+    it("🔸 find all POI in db", async () => {
       const pointOfInterests = await datasource
         .getRepository(PointOfInterest)
         .find({});
       expect(Array.isArray(pointOfInterests)).toBeTruthy();
     });
 
-    it("check if the POI is correctly updated", async () => {
+    it("🔸 check if the POI is correctly updated", async () => {
       const result = await graphql({
         schema,
         source: updatePointOfInterest,
@@ -376,7 +362,7 @@ describe("point of interests", () => {
       expect(result.data?.updatePointOfInterest?.description !== description);
     });
 
-    it("check if the selected POI is correctly deleted from DB", async () => {
+    it("🔸 check if the selected POI is correctly deleted from DB", async () => {
       const result = await graphql({
         schema,
         source: deletePointOfInterest,
@@ -390,7 +376,7 @@ describe("point of interests", () => {
       expect(result.data?.deletePointOfInterest?.id).toBeNull();
     });
 
-    it("check if all points of interest are correctly deleted from DB", async () => {
+    it("🔸 check if all points of interest are correctly deleted from DB", async () => {
       const result = await graphql({
         schema,
         source: deletePointOfinterests,
@@ -403,9 +389,9 @@ describe("point of interests", () => {
   });
 });
 
-describe("users", () => {
-  describe("check user's creation", () => {
-    it("signin", async () => {
+describe("▶️ users", () => {
+  describe("🔎 check user's creation", () => {
+    it("🔸 signin", async () => {
       const result = await graphql({
         schema,
         source: signin,
@@ -419,7 +405,7 @@ describe("users", () => {
       expect(result?.data?.signin).toBeDefined()
     })
 
-    it("return me", async () => {
+    it("🔸 return me", async () => {
       const result = await graphql({
         schema,
         source: getMe,
@@ -431,12 +417,12 @@ describe("users", () => {
     })
 
 
-    it("find all users in db", async () => {
+    it("🔸 find all users in db", async () => {
       const user = await datasource.getRepository(User).find({});
       expect(Array.isArray(user)).toBeTruthy();
     });
 
-    it("find user in db", async () => {
+    it("🔸 find user in db", async () => {
       const user = await datasource
         .getRepository(User)
         .findOneBy({ email: "testuser1@testuser1.com" });
@@ -444,7 +430,7 @@ describe("users", () => {
       expect(user).toBeDefined();
     });
 
-    it("cannot create 2 users with the same email", async () => {
+    it("🔸 cannot create 2 users with the same email", async () => {
       const result = await graphql({
         schema,
         source: createUser,
@@ -459,7 +445,7 @@ describe("users", () => {
       expect(result.errors).toHaveLength(1);
     });
 
-    it("check if the user is correctly updated", async () => {
+    it("🔸 check if the user is correctly updated", async () => {
       const result = await graphql({
         schema,
         source: updateUser,
@@ -474,7 +460,7 @@ describe("users", () => {
       expect(result.data?.updateUser?.role !== role);
     });
 
-    it("check if the user is correctly deleted from DB", async () => {
+    it("🔸 check if the user is correctly deleted from DB", async () => {
       const result = await graphql({
         schema,
         source: deleteUser,
@@ -488,7 +474,7 @@ describe("users", () => {
       expect(result.data?.deleteUser?.id).toBeNull();
     });
 
-    it("check if all users are correctly deleted from DB", async () => {
+    it("🔸 check if all users are correctly deleted from DB", async () => {
       let expected: string = '';
       const users = await datasource.getRepository(User).find({});
       users === null ? expected = `toBeUndefined()` : `toBeNull()`
