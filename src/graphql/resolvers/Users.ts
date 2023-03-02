@@ -49,20 +49,16 @@ export class UserResolver {
     @Arg("email") email: string,
     @Arg("password") password: string
   ): Promise<string | null> {
-    console.log("🚀 ~ file: Users.ts:52 ~ UserResolver ~ Promise: ICI",)
 
     try {
 
       const user = await dataSource
         .getRepository(User)
         .findOne({ where: { email: email } });
-      console.log("🚀 ~ file: Users.ts:56 ~ UserResolver ~ user:", user)
       if (!user) {
-        console.log("🚀 ~ file: Users.ts:52 ~ UserResolver ~ !user: ICI",)
         return null;
       }
       if (await verify(user.password, password)) {
-        console.log("🚀 ~ file: Users.ts:52 ~ UserResolver ~ user.password verify: ICI", await verify(user.password, password))
         let token = sign({ userId: user.id }, env.JWT_SECRET_KEY, {
           expiresIn: "2h",
         });
