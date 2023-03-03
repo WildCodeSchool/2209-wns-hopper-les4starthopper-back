@@ -9,6 +9,17 @@ export const createUser = `
   }
 `;
 
+export const getUser = `
+  query($userId: ID!) {
+    FindUser(id: $userId) {
+      id
+      email
+      password
+      role
+    }
+  } 
+`;
+
 export const getUsers = `
   query FindAllUsers {
     FindAllUsers{
