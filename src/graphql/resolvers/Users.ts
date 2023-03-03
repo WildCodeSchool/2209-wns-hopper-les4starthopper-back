@@ -20,7 +20,7 @@ import env from "../../env";
 @Resolver()
 export class UserResolver {
   ///////// QUERY FIND ALL USERS /////////////
-  @Authorized([1])
+  @Authorized()
   @Query(() => [User], { nullable: true })
   async FindAllUsers(): Promise<User[]> {
     return await dataSource.getRepository(User).find({
@@ -74,7 +74,7 @@ export class UserResolver {
   }
 
   ///////// QUERY FIND USER CONNECTED /////////////
-  @Authorized()
+  @Authorized([1])
   @Query(() => User, { nullable: true })
   async GetMe(@Ctx() context: IContext): Promise<User | null> {
     return context.user;

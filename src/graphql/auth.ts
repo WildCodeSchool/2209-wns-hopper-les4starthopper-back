@@ -27,13 +27,14 @@ export const authChecker: AuthChecker<IContext, number> = async (
 
     const user = await datasource
       .getRepository(User)
-      .findOneBy({ id: userId });
+      .findOneByOrFail({ id: userId });
     if (!user) {
       return false;
     }
 
     if (roles.includes(user.role)) {
       context.user = user;
+
       return true;
     } else {
       return false;
