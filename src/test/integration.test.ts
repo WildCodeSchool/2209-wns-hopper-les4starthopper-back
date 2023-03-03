@@ -5,6 +5,7 @@ import { CategoryResolver } from "../graphql/resolvers/Categories";
 import { UserResolver } from "../graphql/resolvers/Users";
 import datasource from "../utils";
 import {
+  Categories,
   createCategory,
   deleteCategories,
   deleteCategory,
@@ -12,7 +13,7 @@ import {
 } from "../utils/testCategory";
 import { Category } from "../Entities/Category";
 import { authChecker } from "../graphql/auth";
-import { createUser, deleteUsers, signin } from "../utils/testsUser";
+import { createUser, deleteUsers, getUsers, signin } from "../utils/testsUser";
 import { User } from "../Entities/User";
 import { cleanDb } from "../script/cleanDb";
 
@@ -20,6 +21,7 @@ import { CommentResolver } from "../graphql/resolvers/Comments";
 import {
   createCity,
   deleteCities,
+  getCities,
   deleteCity,
   updateCity,
 } from "../utils/testCity";
@@ -40,7 +42,7 @@ import {
   createPointOfInterest,
   deletePointOfInterest,
   deletePointOfinterests,
-  pointOfInterest,
+  PointOfinterests,
   updatePointOfInterest,
 } from "../utils/testPointOfInterest";
 import { PointOfInterest } from "../Entities/PointOfInterest";
@@ -130,8 +132,14 @@ describe("▶️ category", () => {
     });
 
     it("🔸 find all categories in db", async () => {
-      const categories = await datasource.getRepository(Category).find({});
-      expect(Array.isArray(categories)).toBeTruthy();
+      const result = await graphql({
+        schema,
+        source: Categories,
+        contextValue: {
+          token: userToken
+        },
+      });
+      expect(result.data?.Categories).toHaveLength(1);
     });
 
     it("🔸 check if the category is correctly updated", async () => {
@@ -201,8 +209,14 @@ describe("▶️ cities", () => {
     });
 
     it("🔸 find all cities in db", async () => {
-      const cities = await datasource.getRepository(City).find({});
-      expect(Array.isArray(cities)).toBeTruthy();
+      const result = await graphql({
+        schema,
+        source: getCities,
+        contextValue: {
+          token: userToken
+        },
+      });
+      expect(result.data?.Cities).toHaveLength(1);
     });
 
     it("🔸 check if the city is correctly updated", async () => {
@@ -271,8 +285,14 @@ describe("▶️ comments", () => {
     });
 
     it("🔸 find all comments in db", async () => {
-      const comments = await datasource.getRepository(Comment).find({});
-      expect(Array.isArray(comments)).toBeTruthy();
+      const result = await graphql({
+        schema,
+        source: getComments,
+        contextValue: {
+          token: userToken
+        },
+      });
+      expect(result.data?.Comments).toHaveLength(1);
     });
 
     it("🔸 check if the comment is correctly updated", async () => {
@@ -341,10 +361,14 @@ describe("▶️ point of interests", () => {
     });
 
     it("🔸 find all POI in db", async () => {
-      const pointOfInterests = await datasource
-        .getRepository(PointOfInterest)
-        .find({});
-      expect(Array.isArray(pointOfInterests)).toBeTruthy();
+      const result = await graphql({
+        schema,
+        source: PointOfinterests,
+        contextValue: {
+          token: userToken
+        },
+      });
+      expect(result.data?.PointOfinterests).toHaveLength(1);
     });
 
     it("🔸 check if the POI is correctly updated", async () => {
@@ -418,8 +442,14 @@ describe("▶️ users", () => {
 
 
     it("🔸 find all users in db", async () => {
-      const user = await datasource.getRepository(User).find({});
-      expect(Array.isArray(user)).toBeTruthy();
+      const result = await graphql({
+        schema,
+        source: getUsers,
+        contextValue: {
+          token: userToken
+        },
+      });
+      expect(result.data?.FindAllUsers).toHaveLength(1);
     });
 
     it("🔸 find user in db", async () => {
