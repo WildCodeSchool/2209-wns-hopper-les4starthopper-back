@@ -245,6 +245,7 @@ describe("▶️ cities", () => {
           cityId: cityId,
         },
       });
+      console.log("🚀 ~ file: integration.test.ts:248 ~ it ~ result:", result)
       expect(result.data?.deleteCity?.id).toBeNull();
     });
 
