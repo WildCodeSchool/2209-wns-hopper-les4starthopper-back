@@ -27,6 +27,10 @@ export class User {
   @Field({ nullable: true })
   email: string;
 
+  @Column({ unique: true })
+  @Field({ nullable: true })
+  username: string;
+
   @Column({ nullable: true })
   @Field({ nullable: true })
   password: string;
@@ -97,6 +101,9 @@ export class UserInput {
   @Field({ nullable: true })
   @IsEmail()
   email: string;
+
+  @Field({ nullable: true })
+  username: string;
 
   @Field({ nullable: true })
   // 1 maj ... 8 caractères minimum
