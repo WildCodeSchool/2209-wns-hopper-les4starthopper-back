@@ -7,7 +7,7 @@ import { commentsRelations } from "../../utils/relations";
 @Resolver()
 export class CommentResolver {
   ///////// QUERY FIND ALL COMMENTS /////////////
-  @Authorized()
+  // @Authorized()
   @Query(() => [Comment], { nullable: true })
   async Comments(): Promise<Comment[]> {
     const Comments = await dataSource.getRepository(Comment).find({

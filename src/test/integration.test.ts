@@ -80,9 +80,11 @@ describe("🟥 CATEGORY", () => {
             email,
             password,
             role: 1,
+            username: "usertest"
           },
         },
       });
+      console.log("🚀 ~ file: integration.test.ts:86 ~ it ~ result:", result?.data)
       userId = result?.data?.createUser?.id;
       role = result?.data?.createUser?.role;
       password = result?.data?.createUser?.password;
