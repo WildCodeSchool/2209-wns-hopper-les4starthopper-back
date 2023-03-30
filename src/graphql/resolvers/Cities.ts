@@ -58,8 +58,10 @@ export class CityResolver {
     if (updateCity === null) {
       return null;
     }
-    if (data.name != null) {
+    if (data.name != null || data.longitude != null || data.latitude != null) {
       updateCity.name = removeAccents(data.name.toLowerCase());
+      updateCity.longitude = data.longitude;
+      updateCity.latitude = data.latitude;
     }
     updateCity.updatedById = data.updatedById;
     return await dataSource.getRepository(City).save(updateCity);

@@ -11,7 +11,7 @@ import { pointOfInterestRelations } from "../../utils/relations";
 @Resolver()
 export class PointOfInterestResolver {
   ///////// QUERY FIND ALL PointOfinterests /////////////
-  @Authorized()
+  // @Authorized()
   @Query(() => [PointOfInterest], { nullable: true })
   async PointOfinterests(): Promise<PointOfInterest[]> {
     const PointOfinterests = await dataSource
@@ -64,21 +64,30 @@ export class PointOfInterestResolver {
   @Mutation(() => PointOfInterest, { nullable: true })
   async updatePointOfInterest(
     @Arg("id", () => ID) id: number,
-    @Arg("data") data: PointOfInterestInput
+    @Arg("data") data: PointOfInterestInput,
+    @Arg("categoryId") categoryId: number
   ): Promise<PointOfInterest | null> {
+    const category: any = await dataSource
+      .getRepository(Category)
+      .findOne({ where: { id: categoryId } });
     const updatePointOfInterest = await dataSource
       .getRepository(PointOfInterest)
       .findOne({ where: { id } });
     if (updatePointOfInterest === null) {
       return null;
     }
-    if (data.description != null) {
+    if (data.description != null || data.adress != null || data.latitude != null || data.name != null || data.longitude != null || data.cityId != null) {
       updatePointOfInterest.description = data.description;
+      updatePointOfInterest.adress = data.adress;
+      updatePointOfInterest.latitude = data.latitude;
+      updatePointOfInterest.longitude = data.longitude;
+      updatePointOfInterest.name = data.name;
     }
     updatePointOfInterest.updatedById = data.updatedById;
+    const datas = { ...updatePointOfInterest, categories: [category] }
     return await dataSource
       .getRepository(PointOfInterest)
-      .save(updatePointOfInterest);
+      .save(datas);
   }
 
   ///////// MUTATION DELETE POINT OF INTEREST/////////////

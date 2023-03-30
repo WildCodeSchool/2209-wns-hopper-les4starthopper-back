@@ -109,8 +109,9 @@ export class UserResolver {
     if (updateUser === null) {
       return null;
     }
-    if (data.role != null) {
+    if (data.role != null || data.email) {
       updateUser.role = data.role;
+      updateUser.email = data.email;
     }
     updateUser.updatedById = data.updatedById;
     return await dataSource.getRepository(User).save(updateUser);
