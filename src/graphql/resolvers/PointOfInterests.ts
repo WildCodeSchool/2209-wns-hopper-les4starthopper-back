@@ -22,7 +22,7 @@ export class PointOfInterestResolver {
     return PointOfinterests;
   }
   ///////// QUERY FIND ONE PointOfInterest /////////////
-  @Authorized()
+  // @Authorized()
   @Query(() => PointOfInterest, { nullable: true })
   async pointOfInterest(
     @Arg("id", () => ID) id: number
