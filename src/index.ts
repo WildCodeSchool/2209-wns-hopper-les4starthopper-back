@@ -65,12 +65,22 @@ io.on("connection", (socket: any) => {
   console.log(`🟢: ${socket.id} user just connected!`);
 
   socket.on('message', (data: any) => {
-    console.log("🚀 ~ file: index.ts:67 ~ socket.on ~ data:", data)
     io.emit('messageResponse', data);
   });
 
   socket.on('newUser', (data: any) => {
-    users.push(data);
+    // console.log("🚀 ~ file: index.ts:73 ~ socket.on ~ data:", data)
+    // console.log("🚀 ~ file: index.ts:73 ~ socket.on ~ users.length:", users.length)
+    // console.log("🚀 ~ file: index.ts:73 ~ socket.on ~ users:", users)
+
+    users.push(data)
+    for (let i = 0; i < users.length; i++) {
+      if (users[i]?.socketID !== data.socketID) {
+        console.log('oui ==>', users[i], '///', data);
+        users.push(data)
+      }
+    };
+    // users.push(data);
     io.emit('newUserResponse', users);
   });
 
