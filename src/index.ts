@@ -69,18 +69,15 @@ io.on("connection", (socket: any) => {
   });
 
   socket.on('newUser', (data: any) => {
-    // console.log("🚀 ~ file: index.ts:73 ~ socket.on ~ data:", data)
-    // console.log("🚀 ~ file: index.ts:73 ~ socket.on ~ users.length:", users.length)
-    // console.log("🚀 ~ file: index.ts:73 ~ socket.on ~ users:", users)
-
+    console.log("🚀 ~ file: index.ts:72 ~ socket.on ~ data:", data)
     users.push(data)
     for (let i = 0; i < users.length; i++) {
       if (users[i]?.socketID !== data.socketID) {
-        console.log('oui ==>', users[i], '///', data);
-        users.push(data)
+        users.slice(users.indexOf(users[i], 1))
       }
     };
     // users.push(data);
+    console.log("🚀 ~ file: index.ts:80 ~ socket.on ~ users:", users)
     io.emit('newUserResponse', users);
   });
 
