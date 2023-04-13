@@ -68,8 +68,9 @@ io.on("connection", (socket: any) => {
     io.emit('messageResponse', data);
   });
 
+  socket.on('typing', (data: any) => socket.broadcast.emit('typingResponse', data));
+
   socket.on('newUser', (data: any) => {
-    console.log("🚀 ~ file: index.ts:72 ~ socket.on ~ data:", data)
     users.push(data)
     for (let i = 0; i < users.length; i++) {
       if (users[i]?.socketID !== data.socketID) {
@@ -77,7 +78,6 @@ io.on("connection", (socket: any) => {
       }
     };
     // users.push(data);
-    console.log("🚀 ~ file: index.ts:80 ~ socket.on ~ users:", users)
     io.emit('newUserResponse', users);
   });
 
