@@ -54,7 +54,7 @@ http.listen(port, () => {
 
 const expressServer = () => {
   app.listen(3001, () => {
-    console.log("💻✳️  SERVER STARTED ON PORT 3001✳️ 💻");
+    console.log("💻✳️  SERVER STARTED ON PORT 3001 ✳️ 💻");
   });
 };
 
@@ -72,12 +72,6 @@ io.on("connection", (socket: any) => {
 
   socket.on('newUser', (data: any) => {
     users.push(data)
-    for (let i = 0; i < users.length; i++) {
-      if (users[i]?.socketID !== data.socketID) {
-        users.slice(users.indexOf(users[i], 1))
-      }
-    };
-    // users.push(data);
     io.emit('newUserResponse', users);
   });
 
