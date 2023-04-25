@@ -4,11 +4,10 @@ services:
     env_file:
       - .env
     # image: cityguide-graphql
-    build: .
+    image: ericp84/cityguideserver
     ports:
       - 5070:4000
       - 3001:3001
-      - 3002:3002
     volumes:
       - ./src:/app/src
   db:
