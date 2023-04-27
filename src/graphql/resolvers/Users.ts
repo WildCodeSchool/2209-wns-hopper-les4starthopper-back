@@ -50,9 +50,7 @@ export class UserResolver {
     @Arg("email") email: string,
     @Arg("password") password: string
   ): Promise<string | null> {
-
     try {
-
       const user = await dataSource
         .getRepository(User)
         .findOne({ where: { email } });
@@ -60,10 +58,13 @@ export class UserResolver {
         return null;
       }
       if (await verify(user.password, password)) {
-
-        const token = sign({ userId: user.id, userRole: user.role }, 'supersecret', {
-          expiresIn: "2h",
-        });
+        const token = sign(
+          { userId: user.id, userRole: user.role },
+          process.env.JWT_SECRET_KEY || "supersecret",
+          {
+            expiresIn: "2h",
+          }
+        );
         return token;
       } else {
         return null;
@@ -112,7 +113,7 @@ export class UserResolver {
     if (data.role !== null || data.email !== null || data.username !== null) {
       updateUser.role = data.role;
       updateUser.email = data.email;
-      updateUser.username = data.username
+      updateUser.username = data.username;
     }
     updateUser.updatedById = data.updatedById;
     return await dataSource.getRepository(User).save(updateUser);

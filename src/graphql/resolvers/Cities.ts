@@ -7,7 +7,7 @@ import { removeAccents } from "../../utils/utils";
 @Resolver()
 export class CityResolver {
   ///////// QUERY FIND ALL CITIES /////////////
-  @Authorized()
+  /* @Authorized() */
   @Query(() => [City], { nullable: true })
   async Cities(): Promise<City[]> {
     const Cities = await dataSource.getRepository(City).find({

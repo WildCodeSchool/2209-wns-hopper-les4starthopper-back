@@ -13,14 +13,19 @@ export const authChecker: AuthChecker<IContext, number> = async (
 ) => {
   roles = roles.length === 0 ? [1, 2] : roles;
   const token = context.token;
+  console.count();
+
   if (!token) {
     return false;
   }
   try {
+    console.count();
+
     const decodedToken: { userId: number; userRole: number } = verify(
       token,
       process.env.JWT_SECRET_KEY || "supersecret"
     ) as any;
+    console.count();
 
     const userId = decodedToken.userId;
     const userRole = decodedToken.userRole;
@@ -31,6 +36,7 @@ export const authChecker: AuthChecker<IContext, number> = async (
     if (!user) {
       return false;
     }
+    console.count();
 
     if (roles.includes(user.role)) {
       context.user = user;
