@@ -7,7 +7,7 @@ import { categoriesRelations } from "../../utils/relations";
 @Resolver()
 export class CategoryResolver {
   ///////// QUERY FIND ALL Categories /////////////
-  @Authorized()
+  // @Authorized()
   @Query(() => [Category], { nullable: true })
   async Categories(): Promise<Category[]> {
     const Categories = await dataSource.getRepository(Category).find({

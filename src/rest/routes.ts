@@ -43,6 +43,7 @@ export const upload = router.post(
         picture,
         success: true,
         file: imageUpload.secure_url,
+        PoiId,
         message: "File uploaded successfully.",
       });
     } catch (e) {
