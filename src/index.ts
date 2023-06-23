@@ -5,6 +5,7 @@ import { upload } from "./rest/routes";
 import bodyParser from "body-parser";
 import express from "express";
 import cors from 'cors';
+import { seedDatabase } from "./utils/seeder";
 
 const app = express();
 const http = require('http').createServer(app)
@@ -105,5 +106,6 @@ async function bootstrap() {
   console.log(`Server is running, GraphQL Playground available at ${url}`);
   await datasource.initialize();
   console.log("connected to BDD !!!!");
+  await seedDatabase();
 }
 bootstrap();
