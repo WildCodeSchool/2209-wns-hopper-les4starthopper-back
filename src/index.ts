@@ -17,38 +17,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/image-upload", upload);
 
-// const socketIO = require('socket.io')(http, {
-//   cors: {
-//     origin: "*",
-//     methods: ['GET', 'POST'],
-//   }
-// });
-
-// socketIO.on('connection', (socket: any) => {
-//   console.log(`⚡: ${socket.id} user just connected!`);
-//   socket.on('disconnect', () => {
-//     console.log('🔥: A user disconnected');
-//   });
-// });
-// let server = http.createServer(app)
-// let io = require('socket.io')(http, {
-//   cors: {
-//     origin: "*",
-//     methods: ['GET', 'POST']
-//   }
-// });
-
-
-// http.listen(port, () => {
-//   console.log(`🍃 🍃 🍃 [SERVER STARTED ON PORT ${port}] 🍃 🍃 🍃`);
-// })
-
-// io.on('connection', (socket: any) => {
-//   console.log('a user connected');
-//   socket.emit('connection', null)
-// });
-
-
 const expressServer = () => {
   app.listen(3001, () => {
     console.log("💻✳️  SERVER STARTED ON PORT 3001 ✳️ 💻");
@@ -86,39 +54,6 @@ io.on("connection", (socket: any) => {
 http.listen(port, () => {
   console.log(`🍃 🍃 🍃 [WEBSOCKET SERVER STARTED ON PORT ${port}] 🍃 🍃 🍃`);
 });
-
-// let users: any[] = [];
-
-// io.on("connection", (socket: any) => {
-//   console.log(`🟢: ${socket.id} user just connected!`);
-
-//   socket.on('message', (data: any) => {
-//     io.emit('messageResponse', data);
-//   });
-
-//   socket.on('typing', (data: any) => socket.broadcast.emit('typingResponse', data));
-
-//   socket.on('newUser', (data: any) => {
-//     console.debug("🚀 ~ file: index.ts:101 ~ socket.on ~ data:", data)
-//     users.push({ socketID: socket.id, data });
-//     io.emit('newUserResponse', users);
-//   });
-
-//   socket.on('disconnect', () => {
-//     users = users.filter((user: any) => {
-//       return user.socketID !== socket.id;
-//     });
-//     io.emit('newUserResponse', users);
-//     console.log(`🔴: A user disconnected: ${socket.id}`);
-//   });
-
-//   socket.emit("connection", null);
-// });
-
-// http.listen(port, () => {
-//   console.log(`🍃 🍃 🍃 [WEBSOCKET SERVER STARTED ON PORT ${port}] 🍃 🍃 🍃`);
-// });
-
 
 ////////// XXXXXXX //////////
 import { ApolloServer } from "apollo-server";
