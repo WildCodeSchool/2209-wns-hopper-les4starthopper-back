@@ -25,14 +25,14 @@ export class CommentResolver {
     return comment;
   }
   ///////// MUTATION CREATE COMMENT /////////////
-  @Authorized()
+  // @Authorized()
   @Mutation(() => Comment)
   async createComment(@Arg("data") data: CommentInput): Promise<Comment> {
     return await dataSource.getRepository(Comment).save(data);
   }
 
   ///////// MUTATION UPDATE COMMENT /////////////
-  @Authorized()
+  // @Authorized()
   @Mutation(() => Comment, { nullable: true })
   async updateComment(
     @Arg("id", () => ID) id: number,
@@ -53,7 +53,7 @@ export class CommentResolver {
   }
 
   ///////// MUTATION DELETE COMMENT /////////////
-  @Authorized()
+  // @Authorized()
   @Mutation(() => Comment, { nullable: true })
   async deleteComment(
     @Arg("id", () => ID) id: number
@@ -67,7 +67,7 @@ export class CommentResolver {
       .execute();
   }
   ///////// MUTATION DELETE COMMENTS /////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => Comment, { nullable: true })
   async deleteComments(): Promise<DeleteResult | null> {
     return await dataSource

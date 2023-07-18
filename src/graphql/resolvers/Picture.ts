@@ -1,4 +1,4 @@
-import { Query, Arg, Resolver, Mutation, ID, Authorized } from "type-graphql";
+import { Query, Arg, Resolver, Mutation, Authorized } from "type-graphql";
 import { DeleteResult } from "typeorm";
 import { Picture, PictureInput } from "../../Entities/Picture";
 import dataSource from "../../utils";
@@ -6,7 +6,7 @@ import { picturesRelation } from "../../utils/relations";
 
 @Resolver()
 export class PictureResolver {
-  @Authorized()
+  // @Authorized()
   @Query(() => [Picture], { nullable: true })
   async pictures(): Promise<Picture[]> {
     const pictures = await dataSource.getRepository(Picture).find({
@@ -14,7 +14,7 @@ export class PictureResolver {
     });
     return pictures;
   }
-  @Authorized()
+  // @Authorized()
   @Query(() => Picture, { nullable: true })
   async pictureByPOIId(
     @Arg("pointOfInterestId") pointOfInterestId: number
@@ -26,7 +26,7 @@ export class PictureResolver {
     return pictureByPOIId;
   }
 
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => Picture, { nullable: true })
   async uploadPicture(
     @Arg("data") data: PictureInput
@@ -34,7 +34,7 @@ export class PictureResolver {
     return await dataSource.getRepository(Picture).save(data);
   }
 
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => Picture)
   async deletePictures(): Promise<DeleteResult | null> {
     return await dataSource

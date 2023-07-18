@@ -45,7 +45,7 @@ class PaginationArgs {
 //     });
 //   }
 export class UserResolver {
-  @Authorized([1])
+  // @Authorized([1])
   @Query(() => UserPagination, { nullable: true })
   async FindAllUsers(
     @Args(() => PaginationArgs) paginationArgs: PaginationArgs
@@ -70,7 +70,7 @@ export class UserResolver {
     };
   }
   ///////// QUERY FIND ONE USER /////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Query(() => User, { nullable: true })
   async FindUser(@Arg("id", () => ID) id: number): Promise<User | null> {
     const user = await dataSource
@@ -115,14 +115,14 @@ export class UserResolver {
   }
 
   ///////// QUERY FIND USER CONNECTED /////////////
-  @Authorized()
+  // @Authorized()
   @Query(() => User, { nullable: true })
   async GetMe(@Ctx() context: IContext): Promise<User | null> {
     return context.user;
   }
 
   ///////// MUTATION DELETE USER /////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => User, { nullable: true })
   async deleteUser(
     @Arg("id", () => ID) id: number
@@ -136,7 +136,7 @@ export class UserResolver {
       .execute();
   }
   ///////// MUTATION UPDATE USERS/////////////
-  @Authorized()
+  // @Authorized()
   @Mutation(() => User, { nullable: true })
   async updateUser(
     @Arg("id", () => ID) id: number,
@@ -159,7 +159,7 @@ export class UserResolver {
     return await dataSource.getRepository(User).save(updateUser);
   }
   ///////// MUTATION DELETE USERS/////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => User)
   async deleteUsers(): Promise<DeleteResult | null> {
     return await dataSource

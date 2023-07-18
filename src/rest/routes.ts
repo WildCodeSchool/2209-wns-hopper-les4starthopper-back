@@ -29,14 +29,14 @@ export const upload = router.post(
   uploading.single("image"),
   async (req: Request, res: Response) => {
     const PoiId = req.body.PoiId;
-    console.log("🚀 ~ file: routes.ts:32 ~ PoiId:", PoiId)
     try {
       const imageUpload = await cloudinary.uploader.upload(req.file!.path);
       const savePicture = { url: imageUpload.url, pointOfInterestId: PoiId };
       const picture = await datasource
         .getRepository(Picture)
         .save(savePicture)
-        .then(() => {
+        .then((r) => {
+          console.log("🚀 ~ file: routes.ts:39 ~ .then ~ r:", r)
           fs.unlinkSync(req.file!.path);
         });
       res.status(200).json({

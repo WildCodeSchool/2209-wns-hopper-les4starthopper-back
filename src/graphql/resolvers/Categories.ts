@@ -16,7 +16,7 @@ export class CategoryResolver {
     return Categories;
   }
   ///////// QUERY FIND ONE CATEGORY /////////////
-  @Authorized()
+  // @Authorized()
   @Query(() => Category, { nullable: true })
   async category(@Arg("id", () => ID) id: number): Promise<Category | null> {
     const category = await dataSource
@@ -25,14 +25,14 @@ export class CategoryResolver {
     return category;
   }
   ///////// MUTATION CREATE CATEGORY /////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => Category)
   async createCategory(@Arg("data") data: CategoryInput): Promise<Category> {
     return await dataSource.getRepository(Category).save(data);
   }
   ///////// MUTATION UPDATE CATEGORY/////////////
   @Mutation(() => Category, { nullable: true })
-  @Authorized([1])
+  // @Authorized([1])
   async updateCategory(
     @Arg("id", () => ID) id: number,
     @Arg("data") data: CategoryInput
@@ -52,7 +52,7 @@ export class CategoryResolver {
   }
 
   ///////// MUTATION DELETE CATEGORY /////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => Category, { nullable: true })
   async deleteCategory(
     @Arg("id", () => ID) id: number
@@ -66,7 +66,7 @@ export class CategoryResolver {
       .execute();
   }
   ///////// MUTATION DELETE CATEGORIES/////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => Category, { nullable: true })
   async deleteCategories(): Promise<DeleteResult | null> {
     return await dataSource

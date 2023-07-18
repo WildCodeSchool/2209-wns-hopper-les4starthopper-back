@@ -33,7 +33,7 @@ export class PointOfInterestResolver {
     return pointOfInterest;
   }
   ///////// MUTATION CREATE POINT OF INTEREST /////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => PointOfInterest)
   async createPointOfInterest(
     @Arg("data") data: PointOfInterestInput,
@@ -46,7 +46,7 @@ export class PointOfInterestResolver {
     return await dataSource.getRepository(PointOfInterest).save(datas);
   }
   ///////// MUTATION DELETE POINT IF INTEREST /////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => PointOfInterest, { nullable: true })
   async deletePointOfInterest(
     @Arg("id", () => ID) id: number
@@ -60,7 +60,7 @@ export class PointOfInterestResolver {
       .execute();
   }
   ///////// MUTATION UPDATE POINT OF INTEREST/////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => PointOfInterest, { nullable: true })
   async updatePointOfInterest(
     @Arg("id", () => ID) id: number,
@@ -91,7 +91,7 @@ export class PointOfInterestResolver {
   }
 
   ///////// MUTATION DELETE POINT OF INTEREST/////////////
-  @Authorized([1])
+  // @Authorized([1])
   @Mutation(() => PointOfInterest, { nullable: true })
   async deletePointOfinterests(): Promise<DeleteResult | null> {
     return await dataSource
