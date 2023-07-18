@@ -28,8 +28,8 @@ export const upload = router.post(
   "/",
   uploading.single("image"),
   async (req: Request, res: Response) => {
-    const PoiId = req.body.id;
-    let url;
+    const PoiId = req.body.PoiId;
+    console.log("🚀 ~ file: routes.ts:32 ~ PoiId:", PoiId)
     try {
       const imageUpload = await cloudinary.uploader.upload(req.file!.path);
       const savePicture = { url: imageUpload.url, pointOfInterestId: PoiId };

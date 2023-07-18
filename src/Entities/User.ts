@@ -125,3 +125,4 @@ export class UserInput {
   @Field({ nullable: true })
   updated_at: Date;
 }
+

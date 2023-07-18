@@ -6,6 +6,10 @@ import {
   ID,
   Ctx,
   Authorized,
+  ArgsType,
+  Field,
+  Int,
+  Args
 } from "type-graphql";
 import { DeleteResult } from "typeorm";
 import { User, UserInput } from "../../Entities/User";
@@ -16,18 +20,55 @@ import { sign, verify as jwtVerify } from "jsonwebtoken";
 import { authChecker, IContext } from "../auth";
 
 import env from "../../env";
+import UserPagination from "./PaginationResult";
+@ArgsType()
+class PaginationArgs {
+  @Field(() => Int, { defaultValue: 1 })
+  page: number;
+
+  @Field(() => Int, { defaultValue: 10 })
+  limit: number;
+}
 
 @Resolver()
-export class UserResolver {
-  ///////// QUERY FIND ALL USERS /////////////
-  @Authorized([1])
-  @Query(() => [User], { nullable: true })
-  async FindAllUsers(): Promise<User[]> {
-    return await dataSource.getRepository(User).find({
-      relations: usersRelations,
-    });
-  }
+// export class UserResolver {
+//   ///////// QUERY FIND ALL USERS /////////////
+//   @Authorized([1])
+//   @Query(() => UserPagination, { nullable: true })
+//   async FindAllUsers(@Args(() => PaginationArgs) paginationArgs: PaginationArgs): Promise<User[]> {
+//     const { page, limit } = paginationArgs;
 
+//     return await dataSource.getRepository(User).find({
+//       relations: usersRelations,
+//       skip: (page - 1) * limit,
+//       take: limit,
+//     });
+//   }
+export class UserResolver {
+  @Authorized([1])
+  @Query(() => UserPagination, { nullable: true })
+  async FindAllUsers(
+    @Args(() => PaginationArgs) paginationArgs: PaginationArgs
+  ): Promise<UserPagination> {
+    const { page, limit } = paginationArgs;
+
+    const [items, totalItems] = await dataSource.getRepository(User).findAndCount({
+      relations: usersRelations,
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    const totalPages = Math.ceil(totalItems / limit);
+
+    return {
+      items,
+      pagination: {
+        totalItems,
+        totalPages,
+        currentPage: page,
+      },
+    };
+  }
   ///////// QUERY FIND ONE USER /////////////
   @Authorized([1])
   @Query(() => User, { nullable: true })
